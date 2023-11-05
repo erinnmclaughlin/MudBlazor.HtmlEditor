@@ -1,0 +1,29 @@
+name: gh-pages
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Setup .NET Core 🔧
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 7.x
+
+      - name: Publish
+        run: dotnet publish ./samples/BlazorWasm/BlazorWasm.csproj --configuration Release --output build
+          
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build/wwwroot
+          single-commit: true
