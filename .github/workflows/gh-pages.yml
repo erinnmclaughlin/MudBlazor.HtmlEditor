@@ -19,11 +19,14 @@ jobs:
         with:
           dotnet-version: 7.x
 
+      - name: Install .NET WASM Build Tools
+        run: dotnet workload install wasm-tools
+
       - name: Publish
-        run: dotnet publish ./samples/BlazorWasm/BlazorWasm.csproj --configuration Release --output build
+        run: dotnet publish ./samples/BlazorWasm/BlazorWasm.csproj -c:Release -p:GHPages=true -o dist --nologo
           
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build/wwwroot
+          folder: dist/wwwroot
           single-commit: true
