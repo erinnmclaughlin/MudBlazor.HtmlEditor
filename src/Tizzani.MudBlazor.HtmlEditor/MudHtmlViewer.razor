@@ -1,0 +1,10 @@
+<div class="html-content-wrapper ql-snow">
+    <div class="ql-editor">
+        @((MarkupString)Html)
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public string Html { get; set; } = "";
+}

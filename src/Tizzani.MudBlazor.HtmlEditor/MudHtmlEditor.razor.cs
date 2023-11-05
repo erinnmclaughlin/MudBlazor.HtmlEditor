@@ -1,0 +1,53 @@
+using Microsoft.AspNetCore.Components;
+using Tizzani.MudBlazor.HtmlEditor.Services;
+
+namespace Tizzani.MudBlazor.HtmlEditor;
+
+public partial class MudHtmlEditor : IDisposable
+{
+    private QuillInstance QuillInstance = new();
+
+    [Inject]
+    private QuillJsInterop Quill { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string Placeholder { get; set; } = "Tell your story...";
+
+    [Parameter]
+    public string Html { get; set; } = "";
+
+    [Parameter]
+    public EventCallback<string> HtmlChanged { get; set; }
+
+    public void Dispose()
+    {
+        Quill.OnTextChanged -= UpdateInput;
+        Quill.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Quill.InitializeAsync(QuillInstance, Placeholder);
+
+            if (!string.IsNullOrWhiteSpace(Html))
+                await Quill.SetInnerHtmlAsync(Html);
+
+            Quill.OnTextChanged += UpdateInput;
+            StateHasChanged();
+        }
+    }
+
+    private async void UpdateInput()
+    {
+        var html = await Quill.GetInnerHtmlAsync();
+
+        if (html != Html)
+            await HtmlChanged.InvokeAsync(html);
+    }
+}

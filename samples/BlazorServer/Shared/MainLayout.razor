@@ -1,0 +1,41 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>MudHtmlEditor &middot; Blazor Server Demo</PageTitle>
+
+<MudThemeProvider @bind-IsDarkMode="_darkMode" />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" 
+                       Color="Color.Inherit"
+                       Edge="Edge.Start" 
+                       OnClick="ToggleDrawer" />
+        <MudSpacer />
+        <MudToggleIconButton @bind-Toggled="_darkMode"
+                             Color="Color.Inherit"
+                             Icon="@Icons.Material.Filled.DarkMode"
+                             ToggledColor="Color.Inherit"
+                             ToggledIcon="@Icons.Material.Filled.LightMode" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h5" Class="mt-1">MudHtmlEditor Demo</MudText>
+        </MudDrawerHeader>
+        ﻿<MudNavMenu>
+            <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Code">HTML Editor</MudNavLink>
+            <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer Class="mt-8 px-8" MaxWidth="MaxWidth.Large">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool _darkMode = false;
+    bool _drawerOpen = true;
+
+    void ToggleDrawer() => _drawerOpen = !_drawerOpen;
+}
