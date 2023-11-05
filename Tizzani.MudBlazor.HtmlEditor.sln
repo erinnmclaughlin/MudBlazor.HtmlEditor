@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tizzani.MudBlazor.HtmlEditor", "src\Tizzani.MudBlazor.HtmlEditor\Tizzani.MudBlazor.HtmlEditor.csproj", "{00FFEA5C-6188-48BB-9587-BB4BDBFF305E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tizzani.MudBlazor.HtmlEditor", "src\Tizzani.MudBlazor.HtmlEditor\Tizzani.MudBlazor.HtmlEditor.csproj", "{00FFEA5C-6188-48BB-9587-BB4BDBFF305E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServer", "samples\BlazorServer\BlazorServer.csproj", "{C2C55089-0954-4DF7-AD6B-63DA7694FDC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServer", "samples\BlazorServer\BlazorServer.csproj", "{C2C55089-0954-4DF7-AD6B-63DA7694FDC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWasm", "samples\BlazorWasm\BlazorWasm.csproj", "{EF36F5C6-9C84-4CDA-A07D-434F64F20B2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWasm", "samples\BlazorWasm\BlazorWasm.csproj", "{EF36F5C6-9C84-4CDA-A07D-434F64F20B2C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{59162B24-263C-452F-8748-1A3C8F3AFED2}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\gh-pages.yml = .github\workflows\gh-pages.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup .NET Core 🔧
         uses: actions/setup-dotnet@v1
@@ -26,8 +26,7 @@ jobs:
         run: dotnet publish ./samples/BlazorWasm/BlazorWasm.csproj -c:Release -p:GHPages=true -o dist --nologo
           
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v3.7.1
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: dist/wwwroot
+          folder: dist/wwwroot
+          single-commit: true
