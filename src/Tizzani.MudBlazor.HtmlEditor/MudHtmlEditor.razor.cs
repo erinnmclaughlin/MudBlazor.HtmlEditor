@@ -25,6 +25,9 @@ public partial class MudHtmlEditor : IDisposable
     [Parameter]
     public EventCallback<string> HtmlChanged { get; set; }
 
+    [Parameter]
+    public IDictionary<string, object?>? UserAttributes { get; set; }
+
     public void Dispose()
     {
         Quill.OnTextChanged -= UpdateInput;
