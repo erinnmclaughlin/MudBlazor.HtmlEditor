@@ -2,11 +2,11 @@
 
 A customizable HTML editor component for [MudBlazor](https://mudblazor.com/), powered by [QuillJS](https://quilljs.com/).
 
-![image](https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor/assets/22223146/4c3e6b39-32b8-48bc-b25f-d10c93b0de30)
+![image](https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor/assets/22223146/90f50c6b-b287-4e99-8849-added7239521)
 
 Works in dark mode, too!
 
-![image](https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor/assets/22223146/a1d24634-cee5-4d1e-8031-a7e1b842ad11)
+![image](https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor/assets/22223146/7755c8ac-fd95-4dab-8b5b-5360f04302b2)
 
 ### Download from NuGet
 
