@@ -8,6 +8,9 @@ Works in dark mode, too!
 
 ![image](https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor/assets/22223146/7755c8ac-fd95-4dab-8b5b-5360f04302b2)
 
+### Demo
+Try out the [demo](https://erinnmclaughlin.github.io/MudBlazor.HtmlEditor/) on GitHub Pages!
+
 ### Download from NuGet
 
 ```cmd
