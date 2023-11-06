@@ -14,9 +14,6 @@ public partial class MudHtmlEditor : IDisposable
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
-    public bool Outlined { get; set; } = true;
-
-    [Parameter]
     public string Placeholder { get; set; } = "Tell your story...";
 
     [Parameter]
@@ -24,6 +21,9 @@ public partial class MudHtmlEditor : IDisposable
 
     [Parameter]
     public EventCallback<string> HtmlChanged { get; set; }
+
+    [Parameter]
+    public IDictionary<string, object?>? UserAttributes { get; set; }
 
     public void Dispose()
     {
