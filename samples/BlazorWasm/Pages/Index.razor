@@ -10,7 +10,7 @@
             <MudButton Color="Color.Primary" OnClick="SaveChanges" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled">Save Changes</MudButton>
         </MudStack>
 
-        <MudPaper Outlined="true">
+        <MudPaper Outlined="true" Style="resize: both; overflow: hidden; min-height: 150px;">
             <MudHtmlEditor @bind-Html="@_editableHtml" />
         </MudPaper>
     }
