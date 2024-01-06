@@ -10,9 +10,7 @@
             <MudButton Color="Color.Primary" OnClick="SaveChanges" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled">Save Changes</MudButton>
         </MudStack>
 
-        <MudPaper Outlined="true" Style="resize: both; overflow: hidden; min-height: 150px;">
-            <MudHtmlEditor @bind-Html="@_editableHtml" />
-        </MudPaper>
+        <MudHtmlEditor @bind-Html="@_editableHtml" />
     }
     else
     {
@@ -22,14 +20,13 @@
 
         <MudHtmlViewer Html="@_lastSavedHtml" />
     }
-
 </MudStack>
 
 @code {
 
     private string _lastSavedHtml = "<h1 class=\"ql-align-center\">Hello, World!</h1><hr/><p class=\"ql-align-center\">Hi from Blazor + <a href=\"https://quilljs.com/\" target=\"_blank\">QuillJs</a></p>";
     private string _editableHtml = "";
-    private bool _isEditing;
+    private bool _isEditing = true;
 
     protected override void OnInitialized()
     {
