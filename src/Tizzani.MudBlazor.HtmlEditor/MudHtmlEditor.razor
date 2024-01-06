@@ -1,4 +1,4 @@
-<div class="html-editor html-content-wrapper @(Outlined ? "is-outlined" : "")" @attributes="UserAttributes">
+<div class="html-editor html-content-wrapper @(Outlined ? "is-outlined" : "") @(Resizable ? "is-resizable" : "")" @attributes="UserAttributes">
     <div @ref="QuillInstance.ToolbarReference">
         @if (ChildContent is null)
         {

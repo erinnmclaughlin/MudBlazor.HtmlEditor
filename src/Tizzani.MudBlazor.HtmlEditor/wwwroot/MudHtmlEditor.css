@@ -4,6 +4,10 @@
     outline: none;
 }
 
+.html-content-wrapper.is-resizable {
+    resize: both;
+}
+
 .html-content-wrapper .ql-container {
     border: 0;
 }
@@ -54,6 +58,13 @@
     --mud-html-link: var(--mud-palette-primary);
     /* hr */
     --mud-html-divider: var(--mud-palette-divider);
+}
+
+.html-content-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
     .html-content-wrapper,
@@ -129,12 +140,18 @@
             color: var(--mud-html-link);
         }
 
+.html-editor .ql-container {
+    overflow: hidden;
+}
+
 .html-editor .ql-toolbar {
     border-width: 0;
     border-color: var(--mud-palette-lines-inputs);
     border-top-left-radius: var(--mud-default-borderradius);
     border-top-right-radius: var(--mud-default-borderradius);
     display: flex;
+    overflow-x: auto;
+    flex-shrink: 0;
 }
 
     .html-editor.is-outlined .ql-toolbar {

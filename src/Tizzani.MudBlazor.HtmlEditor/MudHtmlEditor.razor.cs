@@ -26,6 +26,9 @@ public partial class MudHtmlEditor : IDisposable
     public EventCallback<string> HtmlChanged { get; set; }
 
     [Parameter]
+    public bool Resizable { get; set; } = true;
+
+    [Parameter]
     public IDictionary<string, object?>? UserAttributes { get; set; }
 
     public void Dispose()
