@@ -4,6 +4,10 @@
     outline: none;
 }
 
+.html-content-wrapper.is-resizable {
+    resize: both;
+}
+
 .html-content-wrapper .ql-container {
     border: 0;
 }
