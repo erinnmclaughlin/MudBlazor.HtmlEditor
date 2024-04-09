@@ -28,7 +28,7 @@ public partial class MudHtmlEditor : IDisposable
     [Parameter]
     public bool Resizable { get; set; } = true;
 
-    [Parameter]
+    [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object?>? UserAttributes { get; set; }
 
     public void Dispose()
