@@ -4,8 +4,8 @@
     outline: none;
 }
 
-.html-content-wrapper.is-resizable {
-    resize: both;
+.is-resizable {
+    resize: vertical;
 }
 
 .html-content-wrapper .ql-container {
@@ -64,7 +64,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 }
 
     .html-content-wrapper,
@@ -150,7 +149,7 @@
     border-top-left-radius: var(--mud-default-borderradius);
     border-top-right-radius: var(--mud-default-borderradius);
     display: flex;
-    overflow-x: auto;
+    flex-wrap: wrap;
     flex-shrink: 0;
 }
 
