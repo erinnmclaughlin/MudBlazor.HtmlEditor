@@ -5,12 +5,7 @@
 <MudStack>
     @if (_isEditing)
     {
-        <MudStack Justify="Justify.FlexEnd" Row="true">
-            <MudButton OnClick="CancelEditing" Size="Size.Small">Cancel</MudButton>
-            <MudButton Color="Color.Primary" OnClick="SaveChanges" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled">Save Changes</MudButton>
-        </MudStack>
-
-        <MudHtmlEditor @bind-Html="@_editableHtml" />
+        <EditorView InitialHtml="@_lastSavedHtml" OnCancel="StopEditing" OnSave="SaveChanges" />
     }
     else
     {
@@ -25,28 +20,21 @@
 @code {
 
     private string _lastSavedHtml = "<h1 class=\"ql-align-center\">Hello, World!</h1><hr/><p class=\"ql-align-center\">Hi from Blazor + <a href=\"https://quilljs.com/\" target=\"_blank\">QuillJs</a></p>";
-    private string _editableHtml = "";
     private bool _isEditing = true;
-
-    protected override void OnInitialized()
-    {
-        _editableHtml = _lastSavedHtml;
-    }
 
     private void StartEditing()
     {
         _isEditing = true;
     }
 
-    private void CancelEditing()
+    private void StopEditing()
     {
-        _editableHtml = _lastSavedHtml;
         _isEditing = false;
     }
 
-    private void SaveChanges()
+    private void SaveChanges(string html)
     {
-        _lastSavedHtml = _editableHtml;
-        _isEditing = false;
+        _lastSavedHtml = html;
+        StopEditing();
     }
 }

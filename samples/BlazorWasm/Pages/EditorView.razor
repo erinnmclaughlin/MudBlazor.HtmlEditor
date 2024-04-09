@@ -1,0 +1,36 @@
+﻿<MudStack Justify="Justify.FlexEnd" Row="true">
+    <MudButton OnClick="OnCancel" Size="Size.Small">Cancel</MudButton>
+    <MudButton OnClick="Reset" Size="Size.Small">Reset</MudButton>
+    <MudButton Color="Color.Primary" OnClick="SaveChanges" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled">Save Changes</MudButton>
+</MudStack>
+
+<MudHtmlEditor @ref="_editor" @bind-Html="@_html" />
+
+@code {
+    private MudHtmlEditor _editor = default!;
+    private string _html = "";
+
+    [Parameter]
+    public string InitialHtml { get; set; } = "";
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSave { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        InitialHtml = _html;
+    }
+
+    private async Task Reset()
+    {
+        await _editor.Reset();
+    }
+
+    private async Task SaveChanges()
+    {
+        await OnSave.InvokeAsync(_html);
+    }
+}

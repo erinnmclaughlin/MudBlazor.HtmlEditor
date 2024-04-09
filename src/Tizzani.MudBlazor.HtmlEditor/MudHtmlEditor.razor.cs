@@ -3,7 +3,7 @@ using Tizzani.MudBlazor.HtmlEditor.Services;
 
 namespace Tizzani.MudBlazor.HtmlEditor;
 
-public partial class MudHtmlEditor : IDisposable
+public sealed partial class MudHtmlEditor : IDisposable
 {
     private QuillInstance QuillInstance = new();
 
@@ -31,11 +31,15 @@ public partial class MudHtmlEditor : IDisposable
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object?>? UserAttributes { get; set; }
 
+    public async Task Reset()
+    {
+        await Quill.SetInnerHtmlAsync("");
+    }
+
     public void Dispose()
     {
         Quill.OnTextChanged -= UpdateInput;
         Quill.Dispose();
-        GC.SuppressFinalize(this);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
