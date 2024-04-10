@@ -12,6 +12,10 @@
     border: 0;
 }
 
+.html-content-wrapper .ql-editor {
+    flex-grow: 1;
+}
+
 .html-content-wrapper.is-outlined .ql-container {
     border: 1px solid var(--mud-palette-lines-inputs);
     border-top: 0;
@@ -144,6 +148,8 @@
         }
 
 .html-editor .ql-container {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
     overflow: hidden;
 }
