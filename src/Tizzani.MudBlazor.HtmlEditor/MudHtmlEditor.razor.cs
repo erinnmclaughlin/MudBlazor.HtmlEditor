@@ -3,9 +3,10 @@ using Microsoft.JSInterop;
 
 namespace Tizzani.MudBlazor.HtmlEditor;
 
-public sealed partial class MudHtmlEditor : IDisposable
+public sealed partial class MudHtmlEditor : IAsyncDisposable
 {
     private DotNetObjectReference<MudHtmlEditor>? _objRef;
+    private IJSObjectReference _quillRef = default!;
 
     public ElementReference Editor = default!;
     public ElementReference Toolbar = default!;
@@ -41,12 +42,13 @@ public sealed partial class MudHtmlEditor : IDisposable
 
     public async Task SetHtml(string html)
     {
-        Console.WriteLine("Setting html to " + html);
-        await JS.InvokeVoidAsync("setQuillHtml", Editor, html);
+        await _quillRef.InvokeVoidAsync("setHtml", html);
     }
 
-    public void Dispose()
+
+    public async ValueTask DisposeAsync()
     {
+        await _quillRef.DisposeAsync();
         _objRef?.Dispose();
     }
 
@@ -59,8 +61,8 @@ public sealed partial class MudHtmlEditor : IDisposable
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("initializeQuill", _objRef, Editor, Toolbar, Placeholder);
-
+            _quillRef = await JS.InvokeAsync<IJSObjectReference>("createQuillInstance", _objRef, Editor, Toolbar, Placeholder);
+            
             if (!string.IsNullOrWhiteSpace(Html))
                 await SetHtml(Html);
 

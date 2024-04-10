@@ -13,36 +13,43 @@ Divider.tagName = 'hr';
 Quill.register(Divider, true);
 Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
 
-function initializeQuill(dotNetRef, editorRef, toolbarRef, placeholder) {
-    var quill = new Quill(editorRef, {
-        modules: {
-            toolbar: {
-                container: toolbarRef,
-                handlers: {
-                    'hr': () => {
-                        var range = quill.getSelection();
+function createQuillInstance(dotNetRef, editorRef, toolbarRef, placeholder) {
+    return new QuillInstance(dotNetRef, editorRef, toolbarRef, placeholder);
+}
 
-                        if (range) {
-                            quill.insertEmbed(range.index, "hr", "null");
+class QuillInstance {
+
+    constructor(dotNetRef, editorRef, toolbarRef, placeholder) {
+        this.quill = new Quill(editorRef, {
+            modules: {
+                toolbar: {
+                    container: toolbarRef,
+                    handlers: {
+                        'hr': () => {
+                            var range = quill.getSelection();
+
+                            if (range) {
+                                quill.insertEmbed(range.index, "hr", "null");
+                            }
                         }
                     }
-                }
+                },
+                blotFormatter: {}
             },
-            blotFormatter: { }
-        },
-        placeholder: placeholder,
-        theme: 'snow'
-    });
+            placeholder: placeholder,
+            theme: 'snow'
+        });
 
-    quill.on('text-change', (delta, oldDelta, source) => {
-        dotNetRef.invokeMethodAsync('NotifyHtmlChanged', getQuillHtml(editorRef));
-    });
-}
+        this.quill.on('text-change', (delta, oldDelta, source) => {
+            dotNetRef.invokeMethodAsync('NotifyHtmlChanged', this.getHtml());
+        });
+    }
 
-function getQuillHtml(editorRef) {
-    return editorRef.__quill.root.innerHTML;
-}
+    getHtml() {
+        return this.quill.root.innerHTML;
+    }
 
-function setQuillHtml(editorRef, html) {
-    return editorRef.__quill.root.innerHTML = html;
+    setHtml(html) {
+        this.quill.root.innerHTML = html;
+    }
 }
