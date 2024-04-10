@@ -19,6 +19,10 @@
     border-bottom-right-radius: var(--mud-default-borderradius);
 }
 
+.html-content-wrapper:not(.is-outlined) .ql-editor {
+    border-top: 1px solid var(--mud-palette-lines-inputs);
+}
+
 .html-content-wrapper .ql-editor.ql-blank::before {
     color: var(--mud-text-secondary);
 }
