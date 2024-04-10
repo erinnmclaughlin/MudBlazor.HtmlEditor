@@ -13,7 +13,7 @@ Divider.tagName = 'hr';
 Quill.register(Divider, true);
 Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
 
-function initializeQuill(id, editorRef, toolbarRef, placeholder) {
+function initializeQuill(dotNetRef, editorRef, toolbarRef, placeholder) {
     var quill = new Quill(editorRef, {
         modules: {
             toolbar: {
@@ -35,7 +35,7 @@ function initializeQuill(id, editorRef, toolbarRef, placeholder) {
     });
 
     quill.on('text-change', (delta, oldDelta, source) => {
-        DotNet.invokeMethodAsync('Tizzani.MudBlazor.HtmlEditor', 'NotifyTextChanged', id);
+        dotNetRef.invokeMethodAsync('NotifyHtmlChanged', getQuillHtml(editorRef));
     });
 }
 

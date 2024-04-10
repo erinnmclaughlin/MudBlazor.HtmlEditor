@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Components;
-using Tizzani.MudBlazor.HtmlEditor.Services;
+using Microsoft.JSInterop;
 
 namespace Tizzani.MudBlazor.HtmlEditor;
 
 public sealed partial class MudHtmlEditor : IDisposable
 {
-    private QuillInstance QuillInstance = new();
+    private DotNetObjectReference<MudHtmlEditor>? _objRef;
+
+    public ElementReference Editor = default!;
+    public ElementReference Toolbar = default!;
 
     [Inject]
-    private QuillJsInterop Quill { get; set; } = default!;
+    private IJSRuntime JS { get; set; } = default!;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -17,7 +20,7 @@ public sealed partial class MudHtmlEditor : IDisposable
     public bool Outlined { get; set; } = true;
 
     [Parameter]
-    public string Placeholder { get; set; } = "Tell your story...";
+    public string Placeholder { get; set; } = "Add a note...";
 
     [Parameter]
     public string Html { get; set; } = "";
@@ -38,31 +41,37 @@ public sealed partial class MudHtmlEditor : IDisposable
 
     public async Task SetHtml(string html)
     {
-        await Quill.SetInnerHtmlAsync(html);
+        Console.WriteLine("Setting html to " + html);
+        await JS.InvokeVoidAsync("setQuillHtml", Editor, html);
     }
 
     public void Dispose()
     {
-        Quill.OnTextChanged -= UpdateInput;
-        Quill.Dispose();
+        _objRef?.Dispose();
+    }
+
+    protected override void OnInitialized()
+    {
+        _objRef = DotNetObjectReference.Create(this);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await Quill.InitializeAsync(QuillInstance, Placeholder);
-            await Quill.SetInnerHtmlAsync(Html);
-            Quill.OnTextChanged += UpdateInput;
+            await JS.InvokeVoidAsync("initializeQuill", _objRef, Editor, Toolbar, Placeholder);
+
+            if (!string.IsNullOrWhiteSpace(Html))
+                await SetHtml(Html);
+
             StateHasChanged();
         }
     }
 
-    private async void UpdateInput()
+    [JSInvokable]
+    public async Task NotifyHtmlChanged(string html)
     {
-        var html = await Quill.GetInnerHtmlAsync();
-
-        if (html != Html)
+        if (Html != html)
             await HtmlChanged.InvokeAsync(html);
     }
 }
