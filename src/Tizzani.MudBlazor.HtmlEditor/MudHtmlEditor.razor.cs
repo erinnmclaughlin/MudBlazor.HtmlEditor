@@ -33,7 +33,12 @@ public sealed partial class MudHtmlEditor : IDisposable
 
     public async Task Reset()
     {
-        await Quill.SetInnerHtmlAsync("");
+        await SetHtml(string.Empty);
+    }
+
+    public async Task SetHtml(string html)
+    {
+        await Quill.SetInnerHtmlAsync(html);
     }
 
     public void Dispose()
@@ -47,10 +52,7 @@ public sealed partial class MudHtmlEditor : IDisposable
         if (firstRender)
         {
             await Quill.InitializeAsync(QuillInstance, Placeholder);
-
-            if (!string.IsNullOrWhiteSpace(Html))
-                await Quill.SetInnerHtmlAsync(Html);
-
+            await Quill.SetInnerHtmlAsync(Html);
             Quill.OnTextChanged += UpdateInput;
             StateHasChanged();
         }
