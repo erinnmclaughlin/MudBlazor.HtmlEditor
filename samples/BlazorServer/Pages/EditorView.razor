@@ -26,17 +26,17 @@
         _html = InitialHtml;
     }
 
-    private async Task<string> HandleFileUpload(MudHtmlEditor editor, Stream stream)
+    private async Task<string> HandleFileUpload(MudHtmlEditor editor, ImageUploadEventArgs args)
     {
         if (!Directory.Exists(_uploadsDirectory))
             Directory.CreateDirectory(_uploadsDirectory);
 
-        using var fs = new FileStream(Path.Combine(_uploadsDirectory, "test.png"), FileMode.Create);
+        using var fs = new FileStream(Path.Combine(_uploadsDirectory, args.FileName), FileMode.Create);
         {
-            await stream.CopyToAsync(fs);
+            await args.Stream.CopyToAsync(fs);
         }
 
-        return "uploads/test.png";
+        return $"uploads/{args.FileName}";
     }
 
     private async Task Reset()

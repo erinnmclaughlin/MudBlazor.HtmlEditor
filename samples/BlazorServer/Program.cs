@@ -24,7 +24,7 @@ app.MapGet("uploads/{fileName}", (string fileName) =>
 {
     var path = Path.Combine("..", "uploads", fileName);
     var stream = new FileStream(path, FileMode.Open);
-    return TypedResults.File(stream, "image/png");
+    return TypedResults.File(stream, "application/octet-stream");
 });
 
 app.MapBlazorHub();

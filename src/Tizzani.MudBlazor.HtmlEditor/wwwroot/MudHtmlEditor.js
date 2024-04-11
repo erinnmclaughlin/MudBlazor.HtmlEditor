@@ -26,37 +26,8 @@ class QuillInstance {
                 toolbar: {
                     container: toolbarRef,
                     handlers: {
-                        'image': () => {
-                            let fileInput = toolbarRef.querySelector('input.ql-image[type=file]');
-                            if (fileInput == null) {
-                                fileInput = document.createElement('input');
-                                fileInput.setAttribute('type', 'file');
-                                fileInput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
-                                fileInput.classList.add('ql-image');
-                                fileInput.addEventListener('change', () => {
-
-                                    if (fileInput.files != null && fileInput.files[0] != null) {
-
-                                        let reader = new FileReader();
-
-                                        reader.onload = (e) => {
-                                            dotNetRef.invokeMethodAsync('HandleFileUpload', DotNet.createJSStreamReference(e.target.result));
-                                        };
-
-                                        reader.readAsArrayBuffer(fileInput.files[0]);
-                                    }
-                                });
-                                toolbarRef.appendChild(fileInput);
-                            }
-                            fileInput.click();
-                        },
-                        'hr': () => {
-                            var range = quill.getSelection();
-
-                            if (range) {
-                                quill.insertEmbed(range.index, "hr", "null");
-                            }
-                        }
+                        'image': () => this.imageHandler(dotNetRef, toolbarRef),
+                        'hr': () => this.dividerHandler()
                     }
                 },
                 blotFormatter: {}
@@ -71,7 +42,7 @@ class QuillInstance {
     }
 
     insertImage(src) {
-        this.quill.insertEmbed(getSelection(), 'image', src);
+        this.quill.insertEmbed(this.quill.getSelection().index, 'image', src);
     }
 
     getHtml() {
@@ -80,5 +51,36 @@ class QuillInstance {
 
     setHtml(html) {
         this.quill.root.innerHTML = html;
+    }
+
+    dividerHandler = () => {
+        this.quill.insertEmbed(this.quill.getSelection().index, 'hr', 'null');
+    }
+
+    imageHandler = (dotNetRef, toolbarRef) => {
+        let fileInput = toolbarRef.querySelector('input.ql-image[type=file]');
+        if (fileInput == null) {
+            fileInput = document.createElement('input');
+            fileInput.setAttribute('type', 'file');
+            fileInput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
+            fileInput.classList.add('ql-image');
+            fileInput.addEventListener('change', () => {
+
+                if (fileInput.files != null && fileInput.files[0] != null) {
+
+                    let file = fileInput.files[0];
+
+                    let reader = new FileReader();
+
+                    reader.onload = (e) => {
+                        dotNetRef.invokeMethodAsync('HandleFileUpload', file.name, file.type, DotNet.createJSStreamReference(e.target.result));
+                    };
+
+                    reader.readAsArrayBuffer(file);
+                }
+            });
+            toolbarRef.appendChild(fileInput);
+        }
+        fileInput.click();
     }
 }
