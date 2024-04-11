@@ -12,33 +12,35 @@ export function createQuill(dotNetRef, editorRef, toolbarRef, placeholder) {
         theme: 'snow'
     });
 
-    return new MudQuillEditor(dotNetRef, editorRef, toolbarRef, quill);
+    return new MudQuillEditor(dotNetRef, quill);
 }
 
 export class MudQuillEditor {
-    constructor(dotNetRef, editorRef, toolbarRef, quill) {
+    constructor(dotNetRef, quill) {
+
+        quill.root.addEventListener("paste", this.onPaste, false);
+        quill.on('text-change', (delta, oldDelta, source) => {
+            dotNetRef.invokeMethodAsync('NotifyHtmlChanged', this.getQuillHtml());
+        });
 
         const toolbar = quill.getModule('toolbar');
         toolbar.addHandler('hr', this.onClickInsertDivider);
         toolbar.addHandler('image', this.onClickInsertImage);
 
-        quill.on('text-change', (delta, oldDelta, source) => {
-            dotNetRef.invokeMethodAsync('NotifyHtmlChanged', this.getQuillHtml());
-        });
-
         this.dotNetRef = dotNetRef;
-        this.editorRef = editorRef;
-        this.toolbarRef = toolbarRef;
         this.quill = quill;
-        this.quill.root.addEventListener("paste", this.onPaste, false);
+        this.toolbar = toolbar;
     }
     
     setQuillHtml = (html) => this.quill.root.innerHTML = html;
     getQuillHtml = () => this.quill.root.innerHTML;
 
-    onClickInsertDivider = () => this.quill.insertEmbed(this.quill.getSelection().index, 'hr', 'null');
+    onClickInsertDivider = () => {
+        this.quill.insertEmbed(this.quill.getSelection().index, 'hr', 'null')
+    };
+
     onClickInsertImage = () => {
-        let fileInput = this.toolbarRef.querySelector('input.ql-image[type=file]');
+        let fileInput = this.toolbar.container.querySelector('input.ql-image[type=file]');
         if (fileInput == null) {
             fileInput = document.createElement('input');
             fileInput.setAttribute('type', 'file');
@@ -50,7 +52,7 @@ export class MudQuillEditor {
                     this.uploadFile(fileInput.files[0]);
                 }
             });
-            this.toolbarRef.appendChild(fileInput);
+            this.toolbar.container.appendChild(fileInput);
         }
         fileInput.click();
     };
@@ -79,9 +81,9 @@ export class MudQuillEditor {
                 }
             }
         }
-    }
+    };
 
-    uploadFile(file, range) {
+    uploadFile = (file, range) => {
         const reader = new FileReader();
 
         reader.onload = async (e) => {
