@@ -6,7 +6,7 @@ namespace Tizzani.MudBlazor.HtmlEditor;
 public sealed partial class MudHtmlEditor : IAsyncDisposable
 {
     private DotNetObjectReference<MudHtmlEditor>? _objRef;
-    private IJSObjectReference _quillRef = default!;
+    private IJSObjectReference? _quillRef;
 
     public ElementReference Editor = default!;
     public ElementReference Toolbar = default!;
@@ -30,6 +30,9 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     public EventCallback<string> HtmlChanged { get; set; }
 
     [Parameter]
+    public Func<MudHtmlEditor, Stream, Task>? FileUploadHandler { get; set; }
+
+    [Parameter]
     public bool Resizable { get; set; } = true;
 
     [Parameter(CaptureUnmatchedValues = true)]
@@ -42,13 +45,15 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
 
     public async Task SetHtml(string html)
     {
-        await _quillRef.InvokeVoidAsync("setHtml", html);
+        if (_quillRef != null)
+            await _quillRef.InvokeVoidAsync("setHtml", html);
     }
-
 
     public async ValueTask DisposeAsync()
     {
-        await _quillRef.DisposeAsync();
+        if (_quillRef != null)
+            await _quillRef.DisposeAsync();
+
         _objRef?.Dispose();
     }
 
@@ -68,6 +73,16 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
 
             StateHasChanged();
         }
+    }
+
+    [JSInvokable]
+    public async Task HandleFileUpload(IJSStreamReference streamRef)
+    {
+        if (FileUploadHandler is null)
+            return;
+
+        using var stream = await streamRef.OpenReadStreamAsync();
+        await FileUploadHandler(this, stream);
     }
 
     [JSInvokable]
