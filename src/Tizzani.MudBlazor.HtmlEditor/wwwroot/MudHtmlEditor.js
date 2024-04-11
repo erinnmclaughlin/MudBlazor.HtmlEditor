@@ -1,5 +1,4 @@
 var Embed = Quill.import('blots/block/embed');
-var Delta = Quill.import('delta');
 
 class Divider extends Embed {
     static create(value) {
