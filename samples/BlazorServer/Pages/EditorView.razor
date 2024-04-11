@@ -4,7 +4,7 @@
     <MudButton Color="Color.Primary" OnClick="SaveChanges" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled">Save Changes</MudButton>
 </MudStack>
 
-<MudHtmlEditor @ref="_editor" @bind-Html="@_html" />
+<MudHtmlEditor @ref="_editor" @bind-Html="@_html" FileUploadHandler="HandleFileUpload" />
 
 @code {
     private MudHtmlEditor _editor = default!;
@@ -32,5 +32,12 @@
     private async Task SaveChanges()
     {
         await OnSave.InvokeAsync(_html);
+    }
+
+    private async Task<string> HandleFileUpload(MudHtmlEditor editor, Stream stream)
+    {
+        using var fs = new FileStream("C:\\temp\\test.png", FileMode.Create);
+        await stream.CopyToAsync(fs);
+        return "uploads/test.png";
     }
 }

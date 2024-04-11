@@ -70,6 +70,10 @@ class QuillInstance {
         });
     }
 
+    insertImage(src) {
+        this.quill.insertEmbed(getSelection(), 'image', src);
+    }
+
     getHtml() {
         return this.quill.root.innerHTML;
     }

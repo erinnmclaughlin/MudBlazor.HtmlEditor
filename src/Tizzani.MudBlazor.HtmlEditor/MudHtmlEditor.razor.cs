@@ -30,7 +30,7 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     public EventCallback<string> HtmlChanged { get; set; }
 
     [Parameter]
-    public Func<MudHtmlEditor, Stream, Task>? FileUploadHandler { get; set; }
+    public Func<MudHtmlEditor, Stream, Task<string>>? FileUploadHandler { get; set; }
 
     [Parameter]
     public bool Resizable { get; set; } = true;
@@ -78,11 +78,12 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     [JSInvokable]
     public async Task HandleFileUpload(IJSStreamReference streamRef)
     {
-        if (FileUploadHandler is null)
+        if (_quillRef is null || FileUploadHandler is null)
             return;
 
         using var stream = await streamRef.OpenReadStreamAsync();
-        await FileUploadHandler(this, stream);
+        var url = await FileUploadHandler(this, stream);
+        await _quillRef.InvokeVoidAsync("insertImage", url);
     }
 
     [JSInvokable]
