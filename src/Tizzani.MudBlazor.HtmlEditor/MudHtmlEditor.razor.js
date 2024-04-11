@@ -30,6 +30,7 @@ export class MudQuillEditor {
         this.editorRef = editorRef;
         this.toolbarRef = toolbarRef;
         this.quill = quill;
+        this.quill.root.addEventListener("paste", this.onPaste, false);
     }
     
     setQuillHtml = (html) => this.quill.root.innerHTML = html;
@@ -46,25 +47,54 @@ export class MudQuillEditor {
             fileInput.addEventListener('change', () => {
 
                 if (fileInput.files != null && fileInput.files[0] != null) {
-
-                    let file = fileInput.files[0];
-
-                    let reader = new FileReader();
-
-                    reader.onload = async (e) => {
-                        const url = await this.dotNetRef.invokeMethodAsync('HandleFileUpload', file.name, file.type, DotNet.createJSStreamReference(e.target.result));
-
-                        if (url != '')
-                            this.quill.insertEmbed(this.quill.getSelection().index, 'image', url);
-                    };
-
-                    reader.readAsArrayBuffer(file);
+                    this.uploadFile(fileInput.files[0]);
                 }
             });
             this.toolbarRef.appendChild(fileInput);
         }
         fileInput.click();
     };
+
+    onPaste = (e) => {
+        let clipboard = e.clipboardData || window.clipboardData;
+
+        if (clipboard && clipboard.items) {
+            let items = clipboard.items;
+            const IMAGE_MIME_REGEX = /^image\/(jpe?g|gif|png|svg|webp)$/i;
+
+            for (let i = 0; i < items.length; i++) {
+                if (IMAGE_MIME_REGEX.test(items[i].type)) {
+                    let file = items[i].getAsFile ? items[i].getAsFile() : items[i];
+
+                    if (file) {
+                        this.quill.focus();
+                        this.range = this.quill.getSelection();
+                        e.preventDefault();
+                        setTimeout(() => {
+                            this.quill.focus();
+                            this.range = this.quill.getSelection();
+                            this.uploadFile(file);
+                        }, 0);
+                    }
+                }
+            }
+        }
+    }
+
+    uploadFile(file, range) {
+        const reader = new FileReader();
+
+        reader.onload = async (e) => {
+            const url = await this.dotNetRef.invokeMethodAsync('HandleFileUpload', file.name, file.type, DotNet.createJSStreamReference(e.target.result));
+
+            if (url != '') {
+                const index = range ? range.index : this.quill.getSelection().index;
+                this.quill.insertEmbed(index, 'image', url);
+            }
+        };
+
+        reader.readAsArrayBuffer(file);
+    }
 }
 
 export class Divider extends Embed {
