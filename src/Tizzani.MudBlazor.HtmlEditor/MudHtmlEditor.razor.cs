@@ -21,13 +21,13 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     public bool Outlined { get; set; } = true;
 
     [Parameter]
-    public string Placeholder { get; set; } = "Add a note...";
+    public string? Placeholder { get; set; }
 
     [Parameter]
-    public string Html { get; set; } = "";
+    public string InitialHtml { get; set; } = "";
 
     [Parameter]
-    public EventCallback<string> HtmlChanged { get; set; }
+    public EventCallback<string> OnChange { get; set; }
 
     [Parameter]
     public Func<MudHtmlEditor, ImageUploadEventArgs, Task<string>>? FileUploadHandler { get; set; }
@@ -69,8 +69,8 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
             await using var module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.razor.js");
             _module = await module.InvokeAsync<IJSObjectReference>("createQuill", _objRef, Editor, Toolbar, Placeholder);
             
-            if (!string.IsNullOrWhiteSpace(Html))
-                await SetHtml(Html);
+            if (!string.IsNullOrWhiteSpace(InitialHtml))
+                await SetHtml(InitialHtml);
 
             StateHasChanged();
         }
@@ -95,7 +95,6 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     [JSInvokable]
     public async Task NotifyHtmlChanged(string html)
     {
-        if (Html != html)
-            await HtmlChanged.InvokeAsync(html);
+        await OnChange.InvokeAsync(html);
     }
 }

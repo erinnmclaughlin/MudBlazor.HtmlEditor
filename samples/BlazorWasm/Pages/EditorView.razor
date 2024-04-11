@@ -4,7 +4,7 @@
     <MudButton Color="Color.Primary" OnClick="SaveChanges" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled">Save Changes</MudButton>
 </MudStack>
 
-<MudHtmlEditor @ref="_editor" @bind-Html="@_html" />
+<MudHtmlEditor @ref="_editor" InitialHtml="@_html" OnChange="html => _html = html" />
 
 @code {
     private MudHtmlEditor _editor = default!;
