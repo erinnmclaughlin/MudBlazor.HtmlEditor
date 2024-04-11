@@ -6,7 +6,7 @@ namespace Tizzani.MudBlazor.HtmlEditor;
 public sealed partial class MudHtmlEditor : IAsyncDisposable
 {
     private DotNetObjectReference<MudHtmlEditor>? _objRef;
-    private IJSObjectReference? _quillRef;
+    private IJSObjectReference? _module;
 
     public ElementReference Editor = default!;
     public ElementReference Toolbar = default!;
@@ -45,14 +45,14 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
 
     public async Task SetHtml(string html)
     {
-        if (_quillRef != null)
-            await _quillRef.InvokeVoidAsync("setHtml", html);
+        if (_module != null)
+            await _module.InvokeVoidAsync("setQuillHtml", html);
     }
 
     public async ValueTask DisposeAsync()
     {
-        if (_quillRef != null)
-            await _quillRef.DisposeAsync();
+        if (_module != null)
+            await _module.DisposeAsync();
 
         _objRef?.Dispose();
     }
@@ -66,7 +66,8 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     {
         if (firstRender)
         {
-            _quillRef = await JS.InvokeAsync<IJSObjectReference>("createQuillInstance", _objRef, Editor, Toolbar, Placeholder);
+            await using var module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.razor.js");
+            _module = await module.InvokeAsync<IJSObjectReference>("createQuill", _objRef, Editor, Toolbar, Placeholder);
             
             if (!string.IsNullOrWhiteSpace(Html))
                 await SetHtml(Html);
@@ -76,21 +77,19 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     }
 
     [JSInvokable]
-    public async Task HandleFileUpload(string fileName, string mimeType, IJSStreamReference streamRef)
+    public async Task<string> HandleFileUpload(string fileName, string mimeType, IJSStreamReference streamRef)
     {
-        if (_quillRef is null || FileUploadHandler is null)
-            return;
+        if (_module is null || FileUploadHandler is null)
+            return string.Empty;
 
         using var stream = await streamRef.OpenReadStreamAsync();
 
-        var url = await FileUploadHandler(this, new ImageUploadEventArgs
+        return await FileUploadHandler(this, new ImageUploadEventArgs
         {
             FileName = fileName,
             MimeType = mimeType,
             Stream = stream
         });
-
-        await _quillRef.InvokeVoidAsync("insertImage", url);
     }
 
     [JSInvokable]
