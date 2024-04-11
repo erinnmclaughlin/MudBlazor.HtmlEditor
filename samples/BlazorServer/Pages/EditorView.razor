@@ -7,6 +7,8 @@
 <MudHtmlEditor @ref="_editor" @bind-Html="@_html" FileUploadHandler="HandleFileUpload" />
 
 @code {
+    private const string _uploadsDirectory = "..\\uploads";
+
     private MudHtmlEditor _editor = default!;
     private string _html = "";
 
@@ -24,6 +26,19 @@
         _html = InitialHtml;
     }
 
+    private async Task<string> HandleFileUpload(MudHtmlEditor editor, Stream stream)
+    {
+        if (!Directory.Exists(_uploadsDirectory))
+            Directory.CreateDirectory(_uploadsDirectory);
+
+        using var fs = new FileStream(Path.Combine(_uploadsDirectory, "test.png"), FileMode.Create);
+        {
+            await stream.CopyToAsync(fs);
+        }
+
+        return "uploads/test.png";
+    }
+
     private async Task Reset()
     {
         await _editor.Reset();
@@ -32,12 +47,5 @@
     private async Task SaveChanges()
     {
         await OnSave.InvokeAsync(_html);
-    }
-
-    private async Task<string> HandleFileUpload(MudHtmlEditor editor, Stream stream)
-    {
-        using var fs = new FileStream("C:\\temp\\test.png", FileMode.Create);
-        await stream.CopyToAsync(fs);
-        return "uploads/test.png";
     }
 }
