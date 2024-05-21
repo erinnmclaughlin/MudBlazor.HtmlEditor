@@ -1,14 +1,18 @@
 using Microsoft.AspNetCore.Components;
-using Tizzani.MudBlazor.HtmlEditor.Services;
+using Microsoft.JSInterop;
 
 namespace Tizzani.MudBlazor.HtmlEditor;
 
-public sealed partial class MudHtmlEditor : IDisposable
+public sealed partial class MudHtmlEditor : IAsyncDisposable
 {
-    private QuillInstance QuillInstance = new();
+    private IJSObjectReference? _module;
+
+    private DotNetObjectReference<MudHtmlEditor>? _dotNetObjectReference;
+    private ElementReference _editorReference;
+    private ElementReference _toolbarReference;
 
     [Inject]
-    private QuillJsInterop Quill { get; set; } = default!;
+    private IJSRuntime JS { get; set; } = default!;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -31,6 +35,9 @@ public sealed partial class MudHtmlEditor : IDisposable
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object?>? UserAttributes { get; set; }
 
+    [Parameter]
+    public Func<MudFileUploadEventArgs, Task<string>>? OnFileUploaded { get; set; }
+
     public async Task Reset()
     {
         await SetHtml(string.Empty);
@@ -38,31 +45,57 @@ public sealed partial class MudHtmlEditor : IDisposable
 
     public async Task SetHtml(string html)
     {
-        await Quill.SetInnerHtmlAsync(html);
+        if (_module is not null)
+            await _module.InvokeVoidAsync("setHtml", html);
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        Quill.OnTextChanged -= UpdateInput;
-        Quill.Dispose();
+        if (_module is not null)
+        {
+            await _module.DisposeAsync();
+            _module = null;
+        }
+
+        _dotNetObjectReference?.Dispose();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await Quill.InitializeAsync(QuillInstance, Placeholder);
-            await Quill.SetInnerHtmlAsync(Html);
-            Quill.OnTextChanged += UpdateInput;
+            _dotNetObjectReference = DotNetObjectReference.Create(this);
+
+            await using var module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.razor.js");
+            _module = await module.InvokeAsync<IJSObjectReference>("MudHtmlEditor.createInstance", _dotNetObjectReference, _editorReference, _toolbarReference, Placeholder, "snow");
+
+            if (!string.IsNullOrWhiteSpace(Html))
+                await SetHtml(Html);
+
             StateHasChanged();
         }
     }
 
-    private async void UpdateInput()
+    [JSInvokable]
+    public async Task NotifyHtmlChanged(string html)
     {
-        var html = await Quill.GetInnerHtmlAsync();
+        await HtmlChanged.InvokeAsync(html);
+    }
 
-        if (html != Html)
-            await HtmlChanged.InvokeAsync(html);
+    public async Task<string> HandleFileUpload(string fileName, IJSStreamReference streamRef)
+    {
+        if (_module is null || OnFileUploaded is null) return string.Empty;
+
+        using var stream = await streamRef.OpenReadStreamAsync();
+
+        var args = new MudFileUploadEventArgs(fileName, stream);
+
+        try
+        {
+            return await OnFileUploaded(args);
+        }
+        catch { return string.Empty; }
     }
 }
+
+public record MudFileUploadEventArgs(string FileName, Stream Stream);

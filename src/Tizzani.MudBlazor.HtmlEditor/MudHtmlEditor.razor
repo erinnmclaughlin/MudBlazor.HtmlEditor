@@ -1,5 +1,5 @@
 <div class="html-editor html-content-wrapper @(Outlined ? "is-outlined" : "")" @attributes="UserAttributes">
-    <div @ref="QuillInstance.ToolbarReference">
+    <div @ref="_toolbarReference">
         @if (ChildContent is null)
         {
             <span class="ql-formats">
@@ -62,5 +62,5 @@
             @ChildContent
         }
     </div>
-    <div class="@(Resizable ? "is-resizable" : "")" @ref="QuillInstance.EditorReference"></div>
+    <div class="@(Resizable ? "is-resizable" : "")" @ref="_editorReference"></div>
 </div>
