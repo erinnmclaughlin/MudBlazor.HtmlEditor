@@ -1,6 +1,20 @@
-# Tizzani.MudBlazor.HtmlEditor
+<h1 align="center">Tizzani.MudBlazor.HtmlEditor</h1>
 
-A customizable HTML editor component for [MudBlazor](https://mudblazor.com/), powered by [QuillJS](https://quilljs.com/).
+<p align="center">
+  A customizable HTML editor component for <a href="https://mudblazor.com/">MudBlazor</a>, powered by <a href="https://quilljs.com/">QuillJS</a>.</p>
+  
+<p align="center">
+  <img alt="NuGet Version" src="https://img.shields.io/nuget/v/Tizzani.MudBlazor.HtmlEditor">
+  <img alt="NuGet Downloads" src="https://img.shields.io/nuget/dt/Tizzani.MudBlazor.HtmlEditor">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/erinnmclaughlin/MudBlazor.HtmlEditor">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/erinnmclaughlin/MudBlazor.HtmlEditor">
+</p>
+
+<p align="center">
+  <strong><small><a href="https://erinnmclaughlin.github.io/MudBlazor.HtmlEditor/">Try out the demo!</a></small></strong>
+</p>
+
+<br>
 
 ![image](https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor/assets/22223146/90f50c6b-b287-4e99-8849-added7239521)
 
@@ -8,30 +22,28 @@ Works in dark mode, too!
 
 ![image](https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor/assets/22223146/7755c8ac-fd95-4dab-8b5b-5360f04302b2)
 
-### Demo
-Try out the [demo](https://erinnmclaughlin.github.io/MudBlazor.HtmlEditor/) on GitHub Pages!
+## Installation
 
-### Download from NuGet
+Download the [latest release](https://www.nuget.org/packages/Tizzani.MudBlazor.HtmlEditor) from NuGet:
 
 ```cmd
 dotnet add package Tizzani.MudBlazor.HtmlEditor
 ```
 
-### Setup
-Add the following to your main HTML file (e.g. `App.razor`, `index.html`, or `Page.cshtml` depending on your Blazor setup):
+Add references to the required CSS and JS to your main HTML file (e.g. `App.razor`, `index.html`, or `Page.cshtml` depending on your Blazor setup):
 
 ```html
+<!-- Add to document <head> -->
 <link href="_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.css" rel="stylesheet" />
-```
 
-```html
+<!-- Add to document <body> -->
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="_content/Tizzani.MudBlazor.HtmlEditor/quill-blot-formatter.min.js"></script> <!-- optional; for image resize -->
 ```
 
-Then add the following to your `_Imports.razor`:
+Finally, add the following to your `_Imports.razor`:
 
-```csharp
+```razor
 @using Tizzani.MudBlazor.HtmlEditor
 ```
 
@@ -40,7 +52,7 @@ There are several options available for customizing the HTML editor toolbar.
 
 To customize options for a specific editor instance, define a `<MudHtmlToolbarOptions>` inside the `<MudHtmlEditor>`:
 
-```html
+```razor
 <MudHtmlEditor>
   <MudHtmlToolbarOptions InsertImage="false" /> <!-- This will exclude the "insert image" toolbar option -->
 </MudHtmlEditor>
@@ -52,7 +64,7 @@ For all available options, see [here](./src/Tizzani.MudBlazor.HtmlEditor/MudHtml
 To configure default options for all instances of the HTML editor, you can wrap your razor content with `<CascadingMudHtmlToolbarOptions>`.
 
 #### App.razor or Routes.razor
-```html
+```razor
 <CascadingMudHtmlToolbarOptions InsertImage="false">
   <Router AppAssembly="@typeof(Program).Assembly">
     <!-- etc. -->
@@ -65,7 +77,7 @@ Child components will inherit the default options, unless they override them wit
 ### Advanced Customization
 For more advanced customization, you can define your own toolbar options inside of an individual `<MudHtmlEditor>` component:
 
-```html
+```razor
 <MudHtmlEditor>
   <span class="ql-formats">
     <button class="ql-bold" type="button"></button>
