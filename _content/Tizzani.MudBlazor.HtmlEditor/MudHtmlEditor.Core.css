@@ -1,0 +1,306 @@
+.html-content-wrapper h1:focus {
+    outline: none;
+}
+
+.is-resizable {
+    resize: vertical;
+}
+
+.html-content-wrapper .ql-container {
+    border: 0;
+}
+
+.html-content-wrapper .ql-editor {
+    flex-grow: 1;
+}
+
+.html-content-wrapper.is-outlined .ql-container {
+    border: 1px solid var(--mud-palette-lines-inputs);
+    border-top: 0;
+    border-bottom-left-radius: var(--mud-default-borderradius);
+    border-bottom-right-radius: var(--mud-default-borderradius);
+}
+
+.html-content-wrapper:not(.is-outlined) .ql-editor {
+    border-top: 1px solid var(--mud-palette-lines-inputs);
+}
+
+.html-content-wrapper .ql-editor.ql-blank::before {
+    color: var(--mud-text-secondary);
+}
+
+.html-content-wrapper,
+.html-content-wrapper.ql-snow,
+.html-content-wrapper .ql-snow {
+    /* Defaults */
+    --mud-html-default-family: var(--mud-typography-default-family);
+    --mud-html-default-size: var(--mud-typography-default-size);
+    --mud-html-default-weight: var(--mud-typography-default-weight);
+    /* h1 */
+    --mud-html-h1-size: 3rem;
+    --mud-html-h1-family: var(--mud-typography-h1-family);
+    --mud-html-h1-weight: var(--mud-typography-h1-weight);
+    /* h2 */
+    --mud-html-h2-size: 2.5rem;
+    --mud-html-h2-family: var(--mud-typography-h2-family);
+    --mud-html-h2-weight: var(--mud-typography-h2-weight);
+    /* h3 */
+    --mud-html-h3-size: 2rem;
+    --mud-html-h3-family: var(--mud-typography-h3-family);
+    --mud-html-h3-weight: var(--mud-typography-h3-weight);
+    /* h4 */
+    --mud-html-h4-size: 1.67rem;
+    --mud-html-h4-family: var(--mud-typography-h4-family);
+    --mud-html-h4-weight: var(--mud-typography-h4-weight);
+    /* h5 */
+    --mud-html-h5-size: 1.33rem;
+    --mud-html-h5-family: var(--mud-typography-h5-family);
+    --mud-html-h5-weight: var(--mud-typography-h5-weight);
+    /* h6 */
+    --mud-html-h6-size: 1rem;
+    --mud-html-h6-family: var(--mud-typography-h6-family);
+    --mud-html-h6-weight: var(--mud-typography-h6-weight);
+    /* a */
+    --mud-html-link: var(--mud-palette-primary);
+    /* hr */
+    --mud-html-divider: var(--mud-palette-divider);
+}
+
+.html-content-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+    .html-content-wrapper,
+    .html-content-wrapper.ql-snow,
+    .html-content-wrapper .ql-snow {
+        font-family: var(--mud-html-default-family);
+        font-size: var(--mud-html-default-size);
+        font-weight: var(--mud-html-default-weight);
+    }
+
+        .html-content-wrapper h1,
+        .html-content-wrapper.ql-snow h1,
+        .html-content-wrapper .ql-snow h1,
+        .html-content-wrapper .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+            font-family: var(--mud-html-h1-family);
+            font-size: var(--mud-html-h1-size);
+            font-weight: var(--mud-html-h1-weight);
+        }
+
+        .html-content-wrapper h2,
+        .html-content-wrapper.ql-snow h2,
+        .html-content-wrapper .ql-snow h2,
+        .html-content-wrapper .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+            font-family: var(--mud-html-h2-family);
+            font-size: var(--mud-html-h2-size);
+            font-weight: var(--mud-html-h2-weight);
+        }
+
+        .html-content-wrapper h3,
+        .html-content-wrapper.ql-snow h3,
+        .html-content-wrapper .ql-snow h3,
+        .html-content-wrapper .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+            font-family: var(--mud-html-h3-family);
+            font-size: var(--mud-html-h3-size);
+            font-weight: var(--mud-html-h3-weight);
+        }
+
+        .html-content-wrapper h4,
+        .html-content-wrapper.ql-snow h4,
+        .html-content-wrapper .ql-snow h4,
+        .html-content-wrapper .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
+            font-family: var(--mud-html-h4-family);
+            font-size: var(--mud-html-h4-size);
+            font-weight: var(--mud-html-h4-weight);
+        }
+
+        .html-content-wrapper h5,
+        .html-content-wrapper.ql-snow h5,
+        .html-content-wrapper .ql-snow h5,
+        .html-content-wrapper .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
+            font-family: var(--mud-html-h5-family);
+            font-size: var(--mud-html-h5-size);
+            font-weight: var(--mud-html-h5-weight);
+        }
+
+        .html-content-wrapper h6,
+        .html-content-wrapper.ql-snow h6,
+        .html-content-wrapper .ql-snow h6,
+        .html-content-wrapper .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
+            font-family: var(--mud-html-h6-family);
+            font-size: var(--mud-html-h6-size);
+            font-weight: var(--mud-html-h6-weight);
+        }
+
+        .html-content-wrapper hr {
+            border-top-width: 1px;
+            border-color: var(--mud-html-divider);
+            margin-top: 6px;
+            margin-bottom: 12px;
+        }
+
+        .html-content-wrapper a {
+            color: var(--mud-html-link);
+        }
+
+.html-editor .ql-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.html-editor .ql-toolbar {
+    border-width: 0;
+    border-color: var(--mud-palette-lines-inputs);
+    border-top-left-radius: var(--mud-default-borderradius);
+    border-top-right-radius: var(--mud-default-borderradius);
+    display: flex;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.html-editor.is-outlined .ql-toolbar {
+    border-width: 1px;
+}
+
+.html-editor .ql-toolbar .ql-formats {
+    display: flex;
+    margin: 0;
+}
+
+    .html-editor .ql-toolbar .ql-formats:not(:first-child) {
+        padding-left: 8px;
+    }
+
+    .html-editor .ql-toolbar .ql-formats:not(:last-child) {
+        padding-right: 8px;
+        border-right: 1px solid var(--mud-palette-divider);
+    }
+
+    .html-editor .ql-toolbar .ql-formats *:not(:last-child) {
+        margin-right: 3px;
+    }
+
+.html-editor .ql-toolbar button {
+    height: 24px;
+    width: 24px;
+    padding: 3px;
+}
+
+.html-editor .ql-toolbar button,
+.html-editor .ql-toolbar .ql-picker-label {
+    color: var(--mud-palette-text-primary);
+    border-radius: 4px;
+}
+
+    .html-editor .ql-toolbar button:hover,
+    .html-editor .ql-toolbar button:focus,
+    .html-editor .ql-toolbar button.ql-active,
+    .html-editor .ql-toolbar .ql-picker-label:hover,
+    .html-editor .ql-toolbar .ql-picker-label.ql-active,
+    .html-editor .ql-toolbar .ql-picker-item:hover,
+    .html-editor .ql-toolbar .ql-picker-item.ql-selected {
+        color: var(--mud-palette-text-primary);
+        background: var(--mud-palette-action-default-hover);
+    }
+
+        .html-editor .ql-toolbar button .ql-fill,
+        .html-editor .ql-toolbar button:hover .ql-fill,
+        .html-editor .ql-toolbar .ql-picker-label .ql-fill,
+        .html-editor .ql-toolbar .ql-picker-label:hover .ql-fill {
+            fill: var(--mud-palette-text-primary);
+        }
+
+        .html-editor .ql-toolbar button .ql-stroke,
+        .html-editor .ql-toolbar button:hover .ql-stroke,
+        .html-editor .ql-toolbar .ql-picker-label .ql-stroke,
+        .html-editor .ql-toolbar .ql-picker-label:hover .ql-stroke {
+            stroke: var(--mud-palette-text-primary);
+        }
+
+
+    .html-editor .ql-toolbar button:focus,
+    .html-editor .ql-toolbar button.ql-active,
+    .html-editor .ql-toolbar .ql-picker-label.ql-active,
+    .html-editor .ql-toolbar .ql-picker-item.ql-selected {
+        color: var(--mud-palette-primary);
+    }
+
+        .html-editor .ql-toolbar button:focus .ql-fill,
+        .html-editor .ql-toolbar button.ql-active .ql-fill,
+        .html-editor .ql-toolbar .ql-picker-label.ql-active .ql-fill,
+        .html-editor .ql-toolbar .ql-picker-item.ql-selected .ql-fill,
+        .html-editor .ql-toolbar button:focus .ql-stroke.ql-fill,
+        .html-editor .ql-toolbar button.ql-active .ql-stroke.ql-fill,
+        .html-editor .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
+        .html-editor .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
+            fill: var(--mud-palette-primary);
+        }
+
+        .html-editor .ql-toolbar button:focus .ql-stroke,
+        .html-editor .ql-toolbar button.ql-active .ql-stroke,
+        .html-editor .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+        .html-editor .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+        .html-editor .ql-toolbar button:focus .ql-stroke-miter,
+        .html-editor .ql-toolbar button.ql-active .ql-stroke-miter,
+        .html-editor .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+        .html-editor .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+            stroke: var(--mud-palette-primary);
+        }
+
+.html-editor .ql-toolbar .ql-picker.ql-expanded .ql-picker-options {
+    background-color: var(--mud-palette-surface);
+    border-color: var(--mud-palette-lines-default);
+    box-shadow: var(--mud-elevation-8);
+    color: var(--mud-palette-text-primary);
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.html-editor .ql-picker .ql-picker-item {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.html-editor .ql-tooltip {
+    background-color: var(--mud-palette-surface);
+    color: var(--mud-palette-text-primary);
+    border: 0;
+    box-shadow: var(--mud-elevation-8);
+    font-family: var(--mud-typography-default-family);
+    border-radius: 4px;
+    z-index: var(--mud-zindex-popover);
+}
+
+    .html-editor .ql-tooltip a {
+        color: var(--mud-palette-primary);
+    }
+
+    .html-editor .ql-tooltip input[type=text] {
+        border-color: var(--mud-palette-lines-inputs);
+        border-radius: var(--mud-default-borderradius);
+        background: var(--mud-palette-background);
+        color: var(--mud-palette-text-primary);
+        outline: 0;
+    }
+
+        .html-editor .ql-tooltip input[type=text]:focus {
+            border: 2px solid var(--mud-palette-primary);
+        }
+
+    .html-editor .ql-tooltip .ql-action,
+    .html-editor .ql-tooltip .ql-remove {
+        font-family: var(--mud-typography-button-family);
+        text-transform: var(--mud-typography-button-text-transform);
+        letter-spacing: var(--mud-typography-button-letterspacing);
+        font-size: var(--mud-typography-button-size);
+        font-weight: var(--mud-typography-button-weight);
+        line-height: var(--mud-typography-button-lineheight);
+    }
+
+    .html-editor .ql-tooltip a.ql-action::after {
+        border-right-color: var(--mud-palette-divider);
+    }
