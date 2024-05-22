@@ -2,55 +2,27 @@
 
 namespace Tizzani.MudBlazor.HtmlEditor.Services;
 
-public sealed class QuillJsInterop : IDisposable
+internal sealed class QuillJsInterop : IAsyncDisposable
 {
-    private readonly IJSRuntime _js;
+    private readonly IJSObjectReference _quillInterop;
 
-    private QuillInstance? _quill;
-    public QuillInstance Quill
+    public QuillJsInterop(IJSObjectReference quillInterop)
     {
-        get => _quill ?? throw new InvalidOperationException("Quill editor has not been initialized.");
-        set
-        {
-            if (_quill != null)
-                throw new InvalidOperationException("Quill editor has already been initialized.");
-
-            _quill = value;
-        }
-    }
-
-    public Action? OnTextChanged { get; set; }
-
-    public QuillJsInterop(IJSRuntime js)
-    {
-        _js = js; 
-        JSInterop.OnTextChanged += OnTextChangedInternal;
-    }
-
-    public async ValueTask InitializeAsync(QuillInstance quill, string? placeholder = null)
-    {
-        Quill = quill;
-        await _js.InvokeVoidAsync("initializeQuill", quill.Id, quill.EditorReference, quill.ToolbarReference, placeholder);
+        _quillInterop = quillInterop;
     }
 
     public async Task<string> GetInnerHtmlAsync()
     {
-        return await _js.InvokeAsync<string>("getQuillHtml", Quill.EditorReference);
+        return await _quillInterop.InvokeAsync<string>("getHtml");
     }
 
     public async ValueTask SetInnerHtmlAsync(string html)
     {
-        await _js.InvokeVoidAsync("setQuillHtml", Quill.EditorReference, html);
+        await _quillInterop.InvokeVoidAsync("setHtml", html);
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        JSInterop.OnTextChanged -= OnTextChangedInternal;
-    }
-
-    private void OnTextChangedInternal(Guid instanceId)
-    {
-        if (instanceId == Quill.Id)
-            OnTextChanged?.Invoke();
+        await _quillInterop.DisposeAsync();
     }
 }
