@@ -1,4 +1,4 @@
-@if (TypographyPicker)
+@if (Show(TypographyPicker))
 {
     <span class="ql-formats">
         <select class="ql-header">
@@ -13,43 +13,43 @@
     </span>
 }
 
-@if (Bold || Italic || Underline || Strike)
+@if (Show(Bold, Italic, Underline, Strike))
 {
     <span class="ql-formats">
-        @if (Bold)
+        @if (Show(Bold))
         {
             <button class="ql-bold" type="button"></button>
         }
-        @if (Italic)
+        @if (Show(Italic))
         {
             <button class="ql-italic" type="button"></button>
         }
-        @if (Underline)
+        @if (Show(Underline))
         {
             <button class="ql-underline" type="button"></button>
         }
-        @if (Strike)
+        @if (Show(Strike))
         {
             <button class="ql-strike" type="button"></button>
         }
     </span>
 }
 
-@if (ForegroundColorPicker || BackgroundColorPicker)
+@if (Show(ForegroundColorPicker, BackgroundColorPicker))
 {
     <span class="ql-formats">
-        @if (ForegroundColorPicker)
+        @if (Show(ForegroundColorPicker))
         {
             <select class="ql-color"></select>
         }
-        @if (BackgroundColorPicker)
+        @if (Show(BackgroundColorPicker))
         {
             <select class="ql-background"></select>
         }
     </span>
 }
 
-@if (SubSuperScript)
+@if (Show(SubSuperScript))
 {
     <span class="ql-formats">
         <button class="ql-script" value="sub" type="button"></button>
@@ -57,7 +57,7 @@
     </span>
 }
 
-@if (Align)
+@if (Show(Align))
 {
     <span class="ql-formats">
         <button class="ql-align" type="button" value=""></button>
@@ -67,18 +67,18 @@
     </span>
 }
 
-@if (OrderedList || UnorderedList || Indent)
+@if (Show(OrderedList, UnorderedList, Indent))
 {
     <span class="ql-formats">
-        @if (OrderedList)
+        @if (Show(OrderedList))
         {
             <button class="ql-list" type="button" value="ordered"></button>
         }
-        @if (UnorderedList)
+        @if (Show(UnorderedList))
         {
             <button class="ql-list" type="button" value="bullet"></button>
         }
-        @if (Indent)
+        @if (Show(Indent))
         {
             <button class="ql-indent" type="button" value="+1"></button>
             <button class="ql-indent" type="button" value="-1"></button>
@@ -86,26 +86,26 @@
     </span>
 }
 
-@if (InsertLink || InsertImage || Blockquote || CodeBlock || HorizontalRule)
+@if (Show(InsertLink, InsertImage, Blockquote, CodeBlock, HorizontalRule))
 {
     <span class="ql-formats">
-        @if (InsertLink)
+        @if (Show(InsertLink))
         {
             <button class="ql-link" type="button"></button>
         }
-        @if (InsertImage)
+        @if (Show(InsertImage))
         {
             <button class="ql-image" type="button"></button>
         }
-        @if (Blockquote)
+        @if (Show(Blockquote))
         {
             <button class="ql-blockquote" type="button"></button>
         }
-        @if (CodeBlock)
+        @if (Show(CodeBlock))
         {
             <button class="ql-code-block" type="button"></button>
         }
-        @if (HorizontalRule)
+        @if (Show(HorizontalRule))
         {
             <button class="ql-hr" title="Horizontal Line">
                 <svg viewBox="0 0 24 24">
