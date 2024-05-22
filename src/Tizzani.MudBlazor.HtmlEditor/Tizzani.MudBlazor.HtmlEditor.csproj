@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Version>2.0.0</Version>
+    <Version>2.1.0</Version>
     <Description>A customizable HTML editor component for MudBlazor, powered by QuillJS.</Description>
     <Copyright>2024 Erin McLaughlin</Copyright>
     <PackageProjectUrl>https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor</PackageProjectUrl>

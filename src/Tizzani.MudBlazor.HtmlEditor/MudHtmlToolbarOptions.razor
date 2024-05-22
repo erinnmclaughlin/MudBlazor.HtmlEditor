@@ -1,0 +1,117 @@
+@if (TypographyPicker)
+{
+    <span class="ql-formats">
+        <select class="ql-header">
+            <option value="1">Heading 1</option>
+            <option value="2">Heading 2</option>
+            <option value="3">Heading 3</option>
+            <option value="4">Heading 4</option>
+            <option value="5">Heading 5</option>
+            <option value="6">Heading 6</option>
+            <option value="" selected>Paragraph</option>
+        </select>
+    </span>
+}
+
+@if (Bold || Italic || Underline || Strike)
+{
+    <span class="ql-formats">
+        @if (Bold)
+        {
+            <button class="ql-bold" type="button"></button>
+        }
+        @if (Italic)
+        {
+            <button class="ql-italic" type="button"></button>
+        }
+        @if (Underline)
+        {
+            <button class="ql-underline" type="button"></button>
+        }
+        @if (Strike)
+        {
+            <button class="ql-strike" type="button"></button>
+        }
+    </span>
+}
+
+@if (ForegroundColorPicker || BackgroundColorPicker)
+{
+    <span class="ql-formats">
+        @if (ForegroundColorPicker)
+        {
+            <select class="ql-color"></select>
+        }
+        @if (BackgroundColorPicker)
+        {
+            <select class="ql-background"></select>
+        }
+    </span>
+}
+
+@if (SubSuperScript)
+{
+    <span class="ql-formats">
+        <button class="ql-script" value="sub" type="button"></button>
+        <button class="ql-script" value="super" type="button"></button>
+    </span>
+}
+
+@if (Align)
+{
+    <span class="ql-formats">
+        <button class="ql-align" type="button" value=""></button>
+        <button class="ql-align" type="button" value="center"></button>
+        <button class="ql-align" type="button" value="right"></button>
+        <button class="ql-align" type="button" value="justify"></button>
+    </span>
+}
+
+@if (OrderedList || UnorderedList || Indent)
+{
+    <span class="ql-formats">
+        @if (OrderedList)
+        {
+            <button class="ql-list" type="button" value="ordered"></button>
+        }
+        @if (UnorderedList)
+        {
+            <button class="ql-list" type="button" value="bullet"></button>
+        }
+        @if (Indent)
+        {
+            <button class="ql-indent" type="button" value="+1"></button>
+            <button class="ql-indent" type="button" value="-1"></button>
+        }
+    </span>
+}
+
+@if (InsertLink || InsertImage || Blockquote || CodeBlock || HorizontalRule)
+{
+    <span class="ql-formats">
+        @if (InsertLink)
+        {
+            <button class="ql-link" type="button"></button>
+        }
+        @if (InsertImage)
+        {
+            <button class="ql-image" type="button"></button>
+        }
+        @if (Blockquote)
+        {
+            <button class="ql-blockquote" type="button"></button>
+        }
+        @if (CodeBlock)
+        {
+            <button class="ql-code-block" type="button"></button>
+        }
+        @if (HorizontalRule)
+        {
+            <button class="ql-hr" title="Horizontal Line">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 19h16c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1zm0-8h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zM3 6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1z" class="ql-fill"></path>
+                </svg>
+            </button>
+        }
+    </span>
+}
