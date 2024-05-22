@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Components;
-using Tizzani.MudBlazor.HtmlEditor.Services;
+using Microsoft.JSInterop;
 
 namespace Tizzani.MudBlazor.HtmlEditor;
 
-public sealed partial class MudHtmlEditor : IDisposable
+public sealed partial class MudHtmlEditor : IAsyncDisposable
 {
-    private QuillInstance QuillInstance = new();
+    private DotNetObjectReference<MudHtmlEditor>? _dotNetRef;
+    private IJSObjectReference? _quill;
+    private ElementReference _toolbar;
+    private ElementReference _editor;
 
     [Inject]
-    private QuillJsInterop Quill { get; set; } = default!;
+    private IJSRuntime JS { get; set; } = default!;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -38,31 +41,48 @@ public sealed partial class MudHtmlEditor : IDisposable
 
     public async Task SetHtml(string html)
     {
-        await Quill.SetInnerHtmlAsync(html);
-    }
+        if (_quill is not null)
+            await _quill.InvokeVoidAsync("setHtml", html);
 
-    public void Dispose()
-    {
-        Quill.OnTextChanged -= UpdateInput;
-        Quill.Dispose();
+        if (HtmlChanged.HasDelegate)
+            await HtmlChanged.InvokeAsync(html);
+
+        Html = html;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await Quill.InitializeAsync(QuillInstance, Placeholder);
-            await Quill.SetInnerHtmlAsync(Html);
-            Quill.OnTextChanged += UpdateInput;
+            _dotNetRef = DotNetObjectReference.Create(this);
+
+            await using var module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.razor.js");
+            _quill = await module.InvokeAsync<IJSObjectReference>("createQuillInterop", _dotNetRef, _editor, _toolbar, Placeholder);
+
+            await SetHtml(Html);
+
             StateHasChanged();
         }
     }
 
-    private async void UpdateInput()
+    [JSInvokable]
+    public async void HandleHtmlContentChanged(string html)
     {
-        var html = await Quill.GetInnerHtmlAsync();
+        if (Html == html) return; // nothing changed
 
-        if (html != Html)
-            await HtmlChanged.InvokeAsync(html);
+        Html = html;
+        await HtmlChanged.InvokeAsync(html);
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (_quill is not null)
+        {
+            await _quill.DisposeAsync();
+            _quill = null;
+        }
+
+        _dotNetRef?.Dispose();
+        _dotNetRef = null;
     }
 }
