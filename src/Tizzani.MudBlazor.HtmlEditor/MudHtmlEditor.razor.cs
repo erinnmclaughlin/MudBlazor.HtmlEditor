@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Tizzani.MudBlazor.HtmlEditor.Services;
 
 namespace Tizzani.MudBlazor.HtmlEditor;
 
 public sealed partial class MudHtmlEditor : IAsyncDisposable
 {
     private DotNetObjectReference<MudHtmlEditor>? _dotNetRef;
-    private QuillJsInterop? _quill;
+    private IJSObjectReference? _quill;
     private ElementReference _toolbar;
     private ElementReference _editor;
 
@@ -42,27 +41,23 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
 
     public async Task SetHtml(string html)
     {
-        Console.WriteLine("Setting the html content");
-        Console.WriteLine(html);
-
         if (_quill is not null)
-        {
-            await _quill.SetInnerHtmlAsync(html);
-            StateHasChanged();
-        }
+            await _quill.InvokeVoidAsync("setHtml", html);
+
+        if (HtmlChanged.HasDelegate)
+            await HtmlChanged.InvokeAsync(html);
+
+        Html = html;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            Console.WriteLine("first render!");
-
             _dotNetRef = DotNetObjectReference.Create(this);
 
             await using var module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.razor.js");
-            var quill = await module.InvokeAsync<IJSObjectReference>("createQuillInterop", _dotNetRef, _editor, _toolbar, Placeholder);
-            _quill = new QuillJsInterop(quill);
+            _quill = await module.InvokeAsync<IJSObjectReference>("createQuillInterop", _dotNetRef, _editor, _toolbar, Placeholder);
 
             await SetHtml(Html);
 

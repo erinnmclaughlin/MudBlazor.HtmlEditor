@@ -50,8 +50,6 @@ export class MudQuillInterop {
     };
 
     setHtml = (html) => {
-        console.log("settin the html");
-        console.log(html);
         this.quill.root.innerHTML = html;
     }
 
