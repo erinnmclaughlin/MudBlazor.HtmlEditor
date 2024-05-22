@@ -18,14 +18,14 @@ dotnet add package Tizzani.MudBlazor.HtmlEditor
 ```
 
 ### Setup
-Add the following to your main HTML file (e.g. `App.razor`, `wwwroot/index.html`, or `Page.cshtml` depending on your Blazor setup):
+Add the following to your main HTML file (e.g. `App.razor`, `index.html`, or `Page.cshtml` depending on your Blazor setup):
 
 ```html
 <link href="_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.css" rel="stylesheet" />
 ```
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script src="_content/Tizzani.MudBlazor.HtmlEditor/quill-blot-formatter.min.js"></script> <!-- optional; for image resize -->
 ```
 
