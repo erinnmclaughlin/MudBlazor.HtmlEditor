@@ -4,16 +4,18 @@
     <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
     <Authors>erinnmclaughlin</Authors>
     <RepositoryUrl>https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Version>1.2.4</Version>
+    <Version>2.0.0-preview1</Version>
     <Description>A customizable HTML editor component for MudBlazor, powered by QuillJS.</Description>
     <Copyright>2024 Erin McLaughlin</Copyright>
     <PackageProjectUrl>https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor</PackageProjectUrl>
+    <PackageTags>MudBlazor;RichTextEditor;HtmlEditor;QuillJS;Blazor</PackageTags>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
