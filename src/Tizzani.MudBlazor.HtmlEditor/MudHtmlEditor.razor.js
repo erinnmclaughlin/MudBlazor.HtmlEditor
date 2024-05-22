@@ -11,14 +11,18 @@ class Divider extends Embed {
 Divider.blotName = 'hr';
 Divider.tagName = 'hr';
 Quill.register(Divider, true);
-Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
+
+try {
+    Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
+} catch { }    
 
 export function createQuillInterop(dotNetRef, editorRef, toolbarRef, placeholder) {
     var quill = new Quill(editorRef, {
         modules: {
             toolbar: {
                 container: toolbarRef
-            }
+            },
+            blotFormatter: {}
         },
         placeholder: placeholder,
         theme: 'snow'
