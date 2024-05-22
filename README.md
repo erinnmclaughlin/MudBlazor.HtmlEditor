@@ -18,18 +18,23 @@ dotnet add package Tizzani.MudBlazor.HtmlEditor
 ```
 
 ### Setup
-In the `Page.cshtml` file (if Blazor Server) or `index.html` file (if Blazor WASM), add the following:
+Add the following to your main HTML file (e.g. `App.razor`, `wwwroot/index.html`, or `Page.cshtml` depending on your Blazor setup):
+
 ```html
 <link href="_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.css" rel="stylesheet" />
 ```
 
 ```html
-<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.min.js"></script>
 <script src="_content/Tizzani.MudBlazor.HtmlEditor/quill-blot-formatter.min.js"></script> <!-- optional; for image resize -->
-<script src="_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.js"></script>
 ```
 
-In `Program.cs`, add the following
-```cs
-builder.Services.AddMudHtmlEditor();
+Then add the following to your `_Imports.razor`:
+
+```csharp
+@using Tizzani.MudBlazor.HtmlEditor
 ```
+
+## Migrating from v1.0 to v2.0
+* Remove the `services.AddMudBlazorHtmlEditor();` call from your `Startup.cs` or `Program.cs` file.
+* Remove the `<script src="_content/Tizzani.MudBlazor.HtmlEditor/HtmlEditor.js">` tag from the document body. The required JS is now included by default.
