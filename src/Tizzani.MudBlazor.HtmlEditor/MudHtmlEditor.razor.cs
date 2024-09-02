@@ -29,6 +29,12 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     public EventCallback<string> HtmlChanged { get; set; }
 
     [Parameter]
+    public string Text { get; set; } = "";
+
+    [Parameter]
+    public EventCallback<string> TextChanged { get; set; }
+
+    [Parameter]
     public bool Resizable { get; set; } = true;
 
     [Parameter(CaptureUnmatchedValues = true)]
@@ -44,10 +50,22 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
         if (_quill is not null)
             await _quill.InvokeVoidAsync("setHtml", html);
 
-        if (HtmlChanged.HasDelegate)
-            await HtmlChanged.InvokeAsync(html);
+        HandleHtmlContentChanged(html);
+        HandleTextContentChanged(await GetText());
+    }
 
-        Html = html;
+    public async Task<string> GetHtml()
+    {
+        if (_quill is not null)
+            return await _quill.InvokeAsync<string>("getHtml");
+        return "";
+    }
+
+    public async Task<string> GetText()
+    {
+        if (_quill is not null)
+            return await _quill.InvokeAsync<string>("getText");
+        return "";
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -72,6 +90,15 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
 
         Html = html;
         await HtmlChanged.InvokeAsync(html);
+    }
+
+    [JSInvokable]
+    public async void HandleTextContentChanged(string text)
+    {
+        if (Text == text) return; // nothing changed
+
+        Text = text;
+        await TextChanged.InvokeAsync(text);
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()

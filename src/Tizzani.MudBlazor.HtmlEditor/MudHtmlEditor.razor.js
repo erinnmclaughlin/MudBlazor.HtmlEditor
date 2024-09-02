@@ -45,6 +45,10 @@ export class MudQuillInterop {
         this.toolbarRef = toolbarRef;
     }
 
+    getText = () => {
+        return this.quill.getText();
+    };
+
     getHtml = () => {
         return this.quill.root.innerHTML;
     };
@@ -69,5 +73,6 @@ export class MudQuillInterop {
      */
     textChangedHandler = (delta, oldDelta, source) => {
         this.dotNetRef.invokeMethodAsync('HandleHtmlContentChanged', this.getHtml());
+        this.dotNetRef.invokeMethodAsync('HandleTextContentChanged', this.getText());
     };
 }
