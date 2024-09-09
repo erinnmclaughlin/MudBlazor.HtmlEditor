@@ -16,35 +16,66 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    /// <summary>
+    /// Whether or not to ourline the editor. Default value is <see langword="true" />.
+    /// </summary>
     [Parameter]
     public bool Outlined { get; set; } = true;
 
+    /// <summary>
+    /// The placeholder text to display when the editor has not content.
+    /// </summary>
     [Parameter]
     public string Placeholder { get; set; } = "Tell your story...";
 
+    /// <summary>
+    /// The HTML markup from the editor.
+    /// </summary>
     [Parameter]
     public string Html { get; set; } = "";
 
+    /// <summary>
+    /// Raised when the <see cref="Html"/> property changes.
+    /// </summary>
     [Parameter]
     public EventCallback<string> HtmlChanged { get; set; }
 
+    /// <summary>
+    /// The plain-text content from the editor.
+    /// </summary>
     [Parameter]
     public string Text { get; set; } = "";
 
+    /// <summary>
+    /// Raised when the <see cref="Text"/> property changes.
+    /// </summary>
     [Parameter]
     public EventCallback<string> TextChanged { get; set; }
 
+    /// <summary>
+    /// Whether or not the user can resize the editor. Default value is <see langword="true" />.
+    /// </summary>
     [Parameter]
     public bool Resizable { get; set; } = true;
 
+    /// <summary>
+    /// Captures html attributes and applies them to the editor.
+    /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object?>? UserAttributes { get; set; }
 
+
+    /// <summary>
+    /// Clears the content of the editor.
+    /// </summary>
     public async Task Reset()
     {
         await SetHtml(string.Empty);
     }
 
+    /// <summary>
+    /// Sets the HTML content of the editor to the specified <paramref name="html"/>.
+    /// </summary>
     public async Task SetHtml(string html)
     {
         if (_quill is not null)
@@ -54,17 +85,25 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
         HandleTextContentChanged(await GetText());
     }
 
+    /// <summary>
+    /// Gets the current HTML content of the editor.
+    /// </summary>
     public async Task<string> GetHtml()
     {
         if (_quill is not null)
             return await _quill.InvokeAsync<string>("getHtml");
+
         return "";
     }
 
+    /// <summary>
+    /// Gets the current plain-text content of the editor.
+    /// </summary>
     public async Task<string> GetText()
     {
         if (_quill is not null)
             return await _quill.InvokeAsync<string>("getText");
+
         return "";
     }
 
@@ -82,6 +121,7 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
             StateHasChanged();
         }
     }
+
 
     [JSInvokable]
     public async void HandleHtmlContentChanged(string html)
