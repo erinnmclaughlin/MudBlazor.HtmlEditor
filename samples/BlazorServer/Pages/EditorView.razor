@@ -1,4 +1,6 @@
-﻿<MudStack Justify="Justify.FlexEnd" Row="true">
+﻿@inject IConfiguration _config;
+
+<MudStack Justify="Justify.FlexEnd" Row="true">
     <MudButton OnClick="OnCancel" Size="Size.Small">Cancel</MudButton>
     <MudButton OnClick="Reset" Size="Size.Small">Reset</MudButton>
     <MudButton Color="Color.Primary" OnClick="SaveChanges" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled">Save Changes</MudButton>
@@ -32,5 +34,17 @@
     private async Task SaveChanges()
     {
         await OnSave.InvokeAsync(_html);
+    }
+
+    // Upload the image into the wwwroot/images folder for demonstration
+    private async Task<string> ImageUploadHandler(string imageName, string imageContentType, Stream imageStream)
+    {
+        var root = _config.GetValue<string>(WebHostDefaults.ContentRootKey) ?? "";
+        var path = Path.Combine(root, $"wwwroot{Path.DirectorySeparatorChar}images", imageName);
+        FileStream filestream = new FileStream(path, FileMode.Create, FileAccess.Write);
+        await imageStream.CopyToAsync(filestream);
+        filestream.Close();
+
+        return $"images/{imageName}";
     }
 }
