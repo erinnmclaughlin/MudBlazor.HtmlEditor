@@ -88,6 +88,22 @@ For more advanced customization, you can define your own toolbar options inside 
 </MudHtmlEditor>
 ```
 
+#### Custom Handlers
+As Quill expects a handler created for every class you can add in custom handlers through the CustomHandler parameter where CustomHandler is a Dictionary<string, string>:
+
+```csharp
+// classname is added to the dictionary without the leading ql- as that is inferred during Quill instanciation
+private Dictionary<string, string> _customHandler_ = new()
+{
+    {"classname", "console.log('hello world');"}
+}
+```
+
+```razor
+<MudHtmlEditor CustomHandler="@_customHandler">
+</>
+```
+
 See the [QuillJS documentation](https://quilljs.com/docs/modules/toolbar/) for more information on customizing the toolbar.
 
 ## Migrating from v1.0 to v2.0
