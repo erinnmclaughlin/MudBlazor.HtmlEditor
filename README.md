@@ -114,3 +114,28 @@ See the [QuillJS documentation](https://quilljs.com/docs/modules/toolbar/) for m
 ## Migrating from v1.0 to v2.0
 * Remove the `services.AddMudBlazorHtmlEditor();` call from your `Startup.cs` or `Program.cs` file.
 * Remove the `<script src="_content/Tizzani.MudBlazor.HtmlEditor/HtmlEditor.js">` tag from the document body. The required JS is now included by default.
+
+### Easy Custom Picker (originally designed for inserting tags)
+Requires `<MudHtmlEditor>` to have valid CustomHandlers property and Dictionary<string, string> for Options property of `<MudHtmlPicker>`:
+
+```csharp
+private Dictionary<string, string> _customHandlers = new() {
+    {"custom", "const e=this.quill.getSelection(); this.quill.insertText(e.index, value);"}
+};
+
+private Dictionary<string, string> _options = new()
+{
+    { "{{ Tag1 }}", "Tag 1" },
+    { "{{ Tag2 }}", "Tag 2" },
+    { "{{ Tag3 }}", "Tag 3" }
+};
+```
+
+```razor
+<MudHtmlEditor @ref="_editor" @bind-Html="@_html" CustomHandlers="@_customHandlers">
+    <MudHtmlToolbarOptions />
+    <MudHtmlPicker Name="custom" Placeholder="Insert Tag ..." Options="_options" />
+</MudHtmlEditor>
+```
+
+Name must be a value existing as the key in the _customHandlers dictionary.
