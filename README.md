@@ -101,8 +101,13 @@ private Dictionary<string, string> _customHandler_ = new()
 
 ```razor
 <MudHtmlEditor CustomHandler="@_customHandler">
+    <span class="ql-formats">
+        <button class="ql-classname" type="button"/>
+    </span>
 </>
 ```
+
+This would require a css class for ql-classname to display a nice button with icon or text etc as per the QuillJS documentation.
 
 See the [QuillJS documentation](https://quilljs.com/docs/modules/toolbar/) for more information on customizing the toolbar.
 
