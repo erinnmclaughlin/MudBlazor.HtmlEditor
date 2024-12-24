@@ -1,20 +1,11 @@
-<h1 align="center">Tizzani.MudBlazor.HtmlEditor</h1>
+# Tizzani.MudBlazor.HtmlEditor
 
-<p align="center">
-  A customizable HTML editor component for <a href="https://mudblazor.com/">MudBlazor</a>, powered by <a href="https://quilljs.com/">QuillJS</a>.</p>
-  
-<p align="center">
-  <img alt="NuGet Version" src="https://img.shields.io/nuget/v/Tizzani.MudBlazor.HtmlEditor">
-  <img alt="NuGet Downloads" src="https://img.shields.io/nuget/dt/Tizzani.MudBlazor.HtmlEditor">
-  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/erinnmclaughlin/MudBlazor.HtmlEditor">
-  <img alt="GitHub License" src="https://img.shields.io/github/license/erinnmclaughlin/MudBlazor.HtmlEditor">
-</p>
+A customizable HTML editor component for [MudBlazor](https://mudblazor.com/), powered by [QuillJS](https://quilljs.com/).
 
-<p align="center">
-  <strong><small><a href="https://erinnmclaughlin.github.io/MudBlazor.HtmlEditor/">Try out the demo!</a></small></strong>
-</p>
-
-<br>
+![NuGet Version](https://img.shields.io/nuget/v/Tizzani.MudBlazor.HtmlEditor)
+![NuGet Downloads](https://img.shields.io/nuget/dt/Tizzani.MudBlazor.HtmlEditor)
+![Last Commit](https://img.shields.io/github/last-commit/erinnmclaughlin/MudBlazor.HtmlEditor)
+![License](https://img.shields.io/github/license/erinnmclaughlin/MudBlazor.HtmlEditor)
 
 ![image](https://raw.githubusercontent.com/erinnmclaughlin/MudBlazor.HtmlEditor/refs/heads/main/assets/light_mode.png)
 
