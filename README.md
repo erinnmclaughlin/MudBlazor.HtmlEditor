@@ -16,11 +16,11 @@
 
 <br>
 
-![image](https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor/assets/22223146/90f50c6b-b287-4e99-8849-added7239521)
+![image](https://raw.githubusercontent.com/erinnmclaughlin/MudBlazor.HtmlEditor/refs/heads/main/assets/light_mode.png)
 
 Works in dark mode, too!
 
-![image](https://github.com/erinnmclaughlin/MudBlazor.HtmlEditor/assets/22223146/7755c8ac-fd95-4dab-8b5b-5360f04302b2)
+![image](https://raw.githubusercontent.com/erinnmclaughlin/MudBlazor.HtmlEditor/refs/heads/main/assets/dark_mode.png)
 
 ## Installation
 
