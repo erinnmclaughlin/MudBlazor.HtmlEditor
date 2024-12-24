@@ -1,5 +1,5 @@
 <div class="html-content-wrapper ql-snow">
-    <div class="ql-editor">
+    <div class="ql-editor" style="@(Borderless ? "border:none" : null)">
         @((MarkupString)Html)
     </div>
 </div>
@@ -7,4 +7,6 @@
 @code {
     [Parameter, EditorRequired]
     public string Html { get; set; } = "";
+    [Parameter]
+    public bool Borderless { get; set; } = false;
 }
