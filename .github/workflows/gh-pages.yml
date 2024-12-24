@@ -17,7 +17,7 @@ jobs:
       - name: Setup .NET Core 🔧
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 8.x
+          dotnet-version: 9.x
 
       - name: Install .NET WASM Build Tools
         run: dotnet workload install wasm-tools

@@ -5,8 +5,17 @@
 </div>
 
 @code {
+
+    /// <summary>
+    /// The HTML content to render.
+    /// </summary>
     [Parameter, EditorRequired]
     public string Html { get; set; } = "";
+
+    /// <summary>
+    /// If <see langword="true" />, removes the default border from the HMTL content's container.
+    /// Default is <see langword="false" />.
+    /// </summary>
     [Parameter]
     public bool Borderless { get; set; } = false;
 }
