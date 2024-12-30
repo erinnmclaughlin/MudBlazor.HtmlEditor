@@ -56,6 +56,15 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     /// Whether or not the user can resize the editor. Default value is <see langword="true" />.
     /// </summary>
     [Parameter]
+    public Func<string, string, Stream, Task<string>>? ImageUploadHandler { get; set; }
+
+    [Parameter]
+    public string? ImageUploadUrl { get; set; }
+
+    [Parameter]
+    public IEnumerable<string> AllowedImageMimeTypes { get; set; } = new List<string>() { "image/png", "image/jpeg" };
+
+    [Parameter]
     public bool Resizable { get; set; } = true;
 
     /// <summary>
@@ -114,7 +123,16 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
             _dotNetRef = DotNetObjectReference.Create(this);
 
             await using var module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.razor.js");
-            _quill = await module.InvokeAsync<IJSObjectReference>("createQuillInterop", _dotNetRef, _editor, _toolbar, Placeholder);
+
+            var settings = new
+            {
+                Placeholder = Placeholder,
+                BlazorImageUpload = ImageUploadHandler != null,
+                ImageUploadUrl = ImageUploadUrl ?? "",
+                AllowedImageMimeTypes = AllowedImageMimeTypes
+            };
+
+            _quill = await module.InvokeAsync<IJSObjectReference>("createQuillInterop", _dotNetRef, _editor, _toolbar, settings);
 
             await SetHtml(Html);
 
@@ -139,6 +157,22 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
 
         Text = text;
         await TextChanged.InvokeAsync(text);
+    }
+
+    [JSInvokable]
+    public async Task<string> SaveImage(string imageName, string fileType, long size)
+    {
+        if(_quill is not null)
+        {
+            var imageJsStream = await _quill.InvokeAsync<IJSStreamReference>("getImageBytes", imageName);
+
+            await using var imageStream = await imageJsStream.OpenReadStreamAsync(size);
+
+            if (ImageUploadHandler is not null)
+                return await ImageUploadHandler(imageName, fileType, imageStream);
+        }
+
+        return "";
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()

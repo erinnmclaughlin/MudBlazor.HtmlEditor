@@ -14,4 +14,8 @@
     <ProjectReference Include="..\..\src\Tizzani.MudBlazor.HtmlEditor\Tizzani.MudBlazor.HtmlEditor.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Folder Include="wwwroot\images\" />
+	</ItemGroup>
+
 </Project>
