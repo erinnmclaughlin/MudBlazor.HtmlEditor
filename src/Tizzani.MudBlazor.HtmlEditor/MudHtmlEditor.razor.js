@@ -16,7 +16,7 @@ try {
     Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
 } catch { }    
 
-export function createQuillInterop(dotNetRef, editorRef, toolbarRef, placeholder) {
+export function createQuillInterop(dotNetRef, editorRef, toolbarRef, placeholder, customHandlers) {
     var quill = new Quill(editorRef, {
         modules: {
             toolbar: {
@@ -27,6 +27,15 @@ export function createQuillInterop(dotNetRef, editorRef, toolbarRef, placeholder
         placeholder: placeholder,
         theme: 'snow'
     });
+
+    // Dynamically add handlers from customHandlers to the toolbar
+    const toolbar = quill.getModule('toolbar');
+    if (customHandlers) {
+        Object.keys(customHandlers).forEach(key => {
+            toolbar.addHandler(key, new Function('value', customHandlers[key]));
+        });
+    }
+
     return new MudQuillInterop(dotNetRef, quill, editorRef, toolbarRef);
 }
 
