@@ -64,6 +64,8 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object?>? UserAttributes { get; set; }
 
+    [Parameter]
+    public IDictionary<string, string>? CustomHandlers { get; set; }
 
     /// <summary>
     /// Clears the content of the editor.
@@ -114,8 +116,7 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
             _dotNetRef = DotNetObjectReference.Create(this);
 
             await using var module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.razor.js");
-            _quill = await module.InvokeAsync<IJSObjectReference>("createQuillInterop", _dotNetRef, _editor, _toolbar, Placeholder);
-
+            _quill = await module.InvokeAsync<IJSObjectReference>("createQuillInterop", _dotNetRef, _editor, _toolbar, Placeholder, CustomHandlers);
             await SetHtml(Html);
 
             StateHasChanged();
