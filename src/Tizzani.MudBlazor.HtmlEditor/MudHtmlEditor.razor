@@ -1,4 +1,4 @@
-<div class="html-editor html-content-wrapper @(Outlined ? "is-outlined" : "")" @attributes="UserAttributes">
+<div class="html-editor html-content-wrapper @(Outlined ? "is-outlined" : "") @(Disabled ? "mudhtmleditor-disabled" : "") @(Class)" @attributes="UserAttributes">
     <div @ref="_toolbar">
         @if (ChildContent is null)
         {

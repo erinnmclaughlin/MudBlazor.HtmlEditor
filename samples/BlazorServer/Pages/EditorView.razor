@@ -2,14 +2,21 @@
     <MudButton OnClick="AddParagraph" Size="Size.Small">Add Paragraph</MudButton>
     <MudButton OnClick="OnCancel" Size="Size.Small">Cancel</MudButton>
     <MudButton OnClick="Reset" Size="Size.Small">Reset</MudButton>
+    <MudButton OnClick="Focus" Size="Size.Small">Focus</MudButton>
+    <MudButton OnClick="Blur" Size="Size.Small">Blur</MudButton>
+    <MudSwitch T="bool" @bind-Value="disabled" Label="Disabled"></MudSwitch>
+    <MudSwitch T="bool" @bind-Value="isReadOnly" Label="ReadOnly"></MudSwitch>
     <MudButton Color="Color.Primary" OnClick="SaveChanges" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled">Save Changes</MudButton>
 </MudStack>
 
-<MudHtmlEditor @ref="_editor" @bind-Html="@_html" />
+<MudHtmlEditor @ref="_editor" @bind-Html="@_html" ReadOnly="isReadOnly" Disabled="disabled" />
 
 @code {
     private MudHtmlEditor _editor = default!;
     private string _html = "";
+
+    bool isReadOnly = false;
+    bool disabled = false;
 
     [Parameter]
     public string InitialHtml { get; set; } = "";
@@ -28,6 +35,14 @@
     private async Task Reset()
     {
         await _editor.Reset();
+    }
+    private async Task Blur()
+    {
+        await _editor.Blur();
+    }
+    private async Task Focus()
+    {
+        await _editor.Focus();
     }
 
     private async Task SaveChanges()
