@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Runtime.InteropServices;
 
 namespace Tizzani.MudBlazor.HtmlEditor;
 
@@ -9,12 +10,17 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     private IJSObjectReference? _quill;
     private ElementReference _toolbar;
     private ElementReference _editor;
+    private bool isReadOnly;
+    private bool disabled;
 
     [Inject]
     private IJSRuntime JS { get; set; } = default!;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string Class { get; set; }
 
     /// <summary>
     /// Whether or not to ourline the editor. Default value is <see langword="true" />.
@@ -33,6 +39,36 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     /// </summary>
     [Parameter]
     public string Html { get; set; } = "";
+
+    [Parameter]
+    public bool ReadOnly
+    {
+        get => isReadOnly;
+        set
+        {
+            if (isReadOnly != value)
+            {
+                isReadOnly = value;
+                if (_quill is not null)
+                {
+                    _ = InvokeAsync(async () => await SetReadOnly(value));
+                }
+            }
+        }
+    }
+
+    [Parameter]
+    public bool Disabled
+    {
+        get => this.disabled;
+        set
+        {
+            if (value != disabled)
+            {
+                this.disabled = value;
+            }
+        }
+    }
 
     /// <summary>
     /// Raised when the <see cref="Html"/> property changes.
@@ -63,7 +99,6 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object?>? UserAttributes { get; set; }
-
 
     /// <summary>
     /// Clears the content of the editor.
@@ -107,6 +142,38 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
         return "";
     }
 
+    private async Task SetReadOnly(bool isReadOnly)
+    {
+        if (_quill is not null)
+        {
+            await _quill.InvokeVoidAsync("enable", !isReadOnly);
+        }
+        this.isReadOnly = isReadOnly;
+    }
+
+    public async Task Focus()
+    {
+        if (_quill is not null)
+            await _quill.InvokeVoidAsync("focus");
+    }
+
+    public async Task<bool> GetHasFocus()
+    {
+        if (_quill is not null)
+            return await _quill.InvokeAsync<bool>("hasFocus");
+        throw new Exception("Quill instance is not initialized.");
+    }
+
+    /// <summary>
+    /// Removes focus from the editor.
+    /// </summary>
+    /// <returns></returns>
+    public async Task Blur()
+    {
+        if (_quill is not null)
+            await _quill.InvokeVoidAsync("blur");
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -117,11 +184,11 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
             _quill = await module.InvokeAsync<IJSObjectReference>("createQuillInterop", _dotNetRef, _editor, _toolbar, Placeholder);
 
             await SetHtml(Html);
+            await SetReadOnly(ReadOnly);
 
             StateHasChanged();
         }
     }
-
 
     [JSInvokable]
     public async void HandleHtmlContentChanged(string html)

@@ -14,7 +14,7 @@ Quill.register(Divider, true);
 
 try {
     Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
-} catch { }    
+} catch { }
 
 export function createQuillInterop(dotNetRef, editorRef, toolbarRef, placeholder) {
     var quill = new Quill(editorRef, {
@@ -65,8 +65,27 @@ export class MudQuillInterop {
         }
     };
 
+    focus = () => {
+        this.quill.focus();
+    }
+
+    hasFocus = () => {
+        return this.quill.hasFocus();
+    }
+
+    enable = (isEnabled) => {
+        this.quill.enable(isEnabled);
+    }
+
     /**
-     * 
+     * Removes focus from the editor.
+     */
+    blur = () => {
+        this.quill.blur();
+    }
+
+    /**
+     *
      * @param {Delta} delta
      * @param {Delta} oldDelta
      * @param {any} source

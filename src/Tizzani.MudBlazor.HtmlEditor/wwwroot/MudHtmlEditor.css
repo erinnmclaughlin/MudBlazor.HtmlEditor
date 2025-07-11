@@ -1,2 +1,12 @@
 @import url('quill.snow.min.css');
 @import url('MudHtmlEditor.Core.css');
+
+
+.mudhtmleditor-disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.mudhtmleditor-disabled .ql-toolbar.ql-snow * {
+    opacity: 0.85;
+}
