@@ -12,18 +12,23 @@ Divider.blotName = 'hr';
 Divider.tagName = 'hr';
 Quill.register(Divider, true);
 
-try {
+if (typeof QuillBlotFormatter !== 'undefined') {
     Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
-} catch { }    
+}
 
 export function createQuillInterop(dotNetRef, editorRef, toolbarRef, placeholder) {
-    var quill = new Quill(editorRef, {
-        modules: {
-            toolbar: {
+    const modulesConfig = {
+        toolbar: {
                 container: toolbarRef
-            },
-            blotFormatter: {}
-        },
+            }
+    };
+    
+    if (typeof QuillBlotFormatter !== 'undefined') {
+    modulesConfig.blotFormatter = {};
+    }
+
+    var quill = new Quill(editorRef, {
+        modulesConfig,
         placeholder: placeholder,
         theme: 'snow'
     });
