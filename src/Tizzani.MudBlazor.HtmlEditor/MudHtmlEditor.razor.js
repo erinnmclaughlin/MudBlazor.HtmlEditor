@@ -92,7 +92,7 @@ export class MudQuillInterop {
             // Create a new <ul> element
             const ol = doc.createElement('ol');
 
-            // Move children from <ol> to <ul>
+            // Move children from <ul> to <ol>
             while (ul.firstChild) {
                 ol.appendChild(ul.firstChild);
             }
