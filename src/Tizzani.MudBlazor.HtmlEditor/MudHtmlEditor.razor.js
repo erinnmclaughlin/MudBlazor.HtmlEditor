@@ -89,17 +89,23 @@ export class MudQuillInterop {
 
         // Find all <ul> elements
         doc.querySelectorAll('ul').forEach(ul => {
+
+            const hasBullets = Array.from(ul.querySelectorAll('li')).some(
+                li => li.getAttribute('data-list') === 'bullet'
+            );
             
-            // Create a new <ol> element
-            const ol = doc.createElement('ol');
+            if (hasBullets) {
+                // Create a new <ol> element
+                const ol = doc.createElement('ol');
 
-            // Move children from <ul> to <ol>
-            while (ul.firstChild) {
-                ol.appendChild(ul.firstChild);
+                // Move children from <ul> to <ol>
+                while (ul.firstChild) {
+                    ol.appendChild(ul.firstChild);
+                }
+
+                // Replace <ul> with <ol>
+                ul.replaceWith(ol);
             }
-
-            // Replace <ul> with <ol>
-            ul.replaceWith(ol);
         });
 
         return doc.body.innerHTML;
