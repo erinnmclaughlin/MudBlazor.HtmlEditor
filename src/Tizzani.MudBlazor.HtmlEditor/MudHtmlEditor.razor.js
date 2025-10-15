@@ -28,7 +28,7 @@ export function createQuillInterop(dotNetRef, editorRef, toolbarRef, placeholder
     }
 
     var quill = new Quill(editorRef, {
-        modulesConfig,
+        modules: modulesConfig,
         placeholder: placeholder,
         theme: 'snow'
     });
