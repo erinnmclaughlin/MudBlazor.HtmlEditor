@@ -16,7 +16,7 @@ try {
     Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
 } catch { }    
 
-export function createQuillInterop(dotNetRef, editorRef, toolbarRef, placeholder) {
+export function createQuillInterop(dotNetRef, editorRef, toolbarRef, placeholder, options) {
     var quill = new Quill(editorRef, {
         modules: {
             toolbar: {
@@ -27,22 +27,19 @@ export function createQuillInterop(dotNetRef, editorRef, toolbarRef, placeholder
         placeholder: placeholder,
         theme: 'snow'
     });
-    return new MudQuillInterop(dotNetRef, quill, editorRef, toolbarRef);
+    return new MudQuillInterop(dotNetRef, quill, editorRef, toolbarRef, options);
 }
 
 export class MudQuillInterop {
-    /**
-     * @param {Quill} quill
-     * @param {Element} editorRef
-     * @param {Element} toolbarRef
-     */
-    constructor(dotNetRef, quill, editorRef, toolbarRef) {
+    
+    constructor(dotNetRef, quill, editorRef, toolbarRef, options) {
         quill.getModule('toolbar').addHandler('hr', this.insertDividerHandler);
         quill.on('text-change', this.textChangedHandler);
         this.dotNetRef = dotNetRef;
         this.quill = quill;
         this.editorRef = editorRef;
         this.toolbarRef = toolbarRef;
+        this.options = options;
     }
 
     getText = () => {
@@ -50,12 +47,62 @@ export class MudQuillInterop {
     };
 
     getHtml = () => {
-        return this.quill.root.innerHTML;
+        const html = this.quill.root.innerHTML;
+        return this.options.sanitizeHtml ? this.getSanitizedHtml(html) : html;
+    };
+    
+    getSanitizedHtml = (html) => {
+
+        // Parse the HTML into a DOM
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Find all <ol> elements
+        doc.querySelectorAll('ol').forEach(ol => {
+
+            const hasBullets = Array.from(ol.querySelectorAll('li')).some(
+                li => li.getAttribute('data-list') === 'bullet'
+            );
+
+            if (hasBullets) {
+                // Create a new <ul> element
+                const ul = doc.createElement('ul');
+
+                // Move children from <ol> to <ul>
+                while (ol.firstChild) {
+                    ul.appendChild(ol.firstChild);
+                }
+
+                // Replace <ol> with <ul>
+                ol.replaceWith(ul);
+            }
+        });
+
+        return doc.body.innerHTML;
     };
 
-    setHtml = (html) => {
-        this.quill.root.innerHTML = html;
-    }
+    getQuillHtml = (html) => {
+
+        // Parse the HTML into a DOM
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Find all <ul> elements
+        doc.querySelectorAll('ul').forEach(ul => {
+            // Create a new <ul> element
+            const ol = doc.createElement('ol');
+
+            // Move children from <ol> to <ul>
+            while (ul.firstChild) {
+                ol.appendChild(ul.firstChild);
+            }
+
+            // Replace <ol> with <ul>
+            ul.replaceWith(ol);
+        });
+
+        return doc.body.innerHTML;
+    };
 
     insertDividerHandler = () => {
         const range = this.quill.getSelection();
@@ -65,12 +112,10 @@ export class MudQuillInterop {
         }
     };
 
-    /**
-     * 
-     * @param {Delta} delta
-     * @param {Delta} oldDelta
-     * @param {any} source
-     */
+    setHtml = (html) => {
+        this.quill.root.innerHTML = this.options.sanitizeHtml ? this.getQuillHtml(html) : html;
+    }
+
     textChangedHandler = (delta, oldDelta, source) => {
         this.dotNetRef.invokeMethodAsync('HandleHtmlContentChanged', this.getHtml());
         this.dotNetRef.invokeMethodAsync('HandleTextContentChanged', this.getText());
