@@ -5,6 +5,8 @@ namespace Tizzani.MudBlazor.HtmlEditor;
 
 public sealed partial class MudHtmlEditor : IAsyncDisposable
 {
+    private readonly MudHtmlEditorOptions _options = new();
+    
     private DotNetObjectReference<MudHtmlEditor>? _dotNetRef;
     private IJSObjectReference? _quill;
     private ElementReference _toolbar;
@@ -23,7 +25,7 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     public bool Outlined { get; set; } = true;
 
     /// <summary>
-    /// The placeholder text to display when the editor has not content.
+    /// The placeholder text to display when the editor has no content.
     /// </summary>
     [Parameter]
     public string Placeholder { get; set; } = "Tell your story...";
@@ -52,6 +54,18 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     [Parameter]
     public EventCallback<string> TextChanged { get; set; }
 
+    /// <summary>
+    /// When true, ol elements containing li elements with data-list="bullet" will be replaced with ul elements.
+    /// Default value is true. Set to false to revert to previous behavior.
+    /// </summary>
+    [Obsolete("This parameter was added to preserve backwards compatibility, but will be removed in a future version.")]
+    [Parameter]
+    public bool ReplaceOrderedWithUnorderedListTag
+    {
+        get => _options.SanitizeHtml;
+        set => _options.SanitizeHtml = value;
+    }
+    
     /// <summary>
     /// Whether or not the user can resize the editor. Default value is <see langword="true" />.
     /// </summary>
@@ -114,7 +128,7 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
             _dotNetRef = DotNetObjectReference.Create(this);
 
             await using var module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.razor.js");
-            _quill = await module.InvokeAsync<IJSObjectReference>("createQuillInterop", _dotNetRef, _editor, _toolbar, Placeholder);
+            _quill = await module.InvokeAsync<IJSObjectReference>("createQuillInterop", _dotNetRef, _editor, _toolbar, Placeholder, _options);
 
             await SetHtml(Html);
 
@@ -152,4 +166,9 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
         _dotNetRef?.Dispose();
         _dotNetRef = null;
     }
+}
+
+public sealed class MudHtmlEditorOptions
+{
+    public bool SanitizeHtml { get; set; } = true;
 }
