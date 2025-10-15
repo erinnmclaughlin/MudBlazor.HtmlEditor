@@ -89,7 +89,8 @@ export class MudQuillInterop {
 
         // Find all <ul> elements
         doc.querySelectorAll('ul').forEach(ul => {
-            // Create a new <ul> element
+            
+            // Create a new <ol> element
             const ol = doc.createElement('ol');
 
             // Move children from <ul> to <ol>
