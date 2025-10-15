@@ -97,7 +97,7 @@ export class MudQuillInterop {
                 ol.appendChild(ul.firstChild);
             }
 
-            // Replace <ol> with <ul>
+            // Replace <ul> with <ol>
             ul.replaceWith(ol);
         });
 
