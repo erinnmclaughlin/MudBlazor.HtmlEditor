@@ -114,14 +114,16 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
             _dotNetRef = DotNetObjectReference.Create(this);
 
             await using var module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Tizzani.MudBlazor.HtmlEditor/MudHtmlEditor.razor.js");
-            _quill = await module.InvokeAsync<IJSObjectReference>("createQuillInterop", _dotNetRef, _editor, _toolbar, Placeholder);
+            var result = await module.InvokeAsync<object?>("createQuillInterop", _dotNetRef, _editor, _toolbar, Placeholder);
 
-            await SetHtml(Html);
-
-            StateHasChanged();
+            if (result is IJSObjectReference quillInterop)
+            {
+                _quill = quillInterop;
+                await SetHtml(Html);
+                StateHasChanged();
+            }
         }
     }
-
 
     [JSInvokable]
     public async void HandleHtmlContentChanged(string html)
