@@ -17,6 +17,10 @@ if (typeof QuillBlotFormatter !== 'undefined') {
 }
 
 export function createQuillInterop(dotNetRef, editorRef, toolbarRef, placeholder) {
+    if (!editorRef || !editorRef.isConnected || !toolbarRef || !toolbarRef.isConnected) {
+        throw new Error('DOM elements disconnected.');
+    }
+
     const modulesConfig = {
         toolbar: {
                 container: toolbarRef
