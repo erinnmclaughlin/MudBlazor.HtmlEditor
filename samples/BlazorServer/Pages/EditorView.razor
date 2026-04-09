@@ -1,15 +1,19 @@
-﻿<MudStack Justify="Justify.FlexEnd" Row="true">
+﻿@using System.Text.Json.Nodes
+<MudStack Justify="Justify.FlexEnd" Row="true">
     <MudButton OnClick="AddParagraph" Size="Size.Small">Add Paragraph</MudButton>
+    <MudButton OnClick="@ShowContents" Size="Size.Small">Show Contents</MudButton>
     <MudButton OnClick="OnCancel" Size="Size.Small">Cancel</MudButton>
     <MudButton OnClick="Reset" Size="Size.Small">Reset</MudButton>
     <MudButton Color="Color.Primary" OnClick="SaveChanges" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled">Save Changes</MudButton>
 </MudStack>
 
 <MudHtmlEditor @ref="_editor" @bind-Html="@_html" />
+<MudText>@(deltaContentsString)</MudText>
 
 @code {
     private MudHtmlEditor _editor = default!;
     private string _html = "";
+    private string deltaContentsString = "";
 
     [Parameter]
     public string InitialHtml { get; set; } = "";
@@ -32,11 +36,16 @@
 
     private async Task SaveChanges()
     {
+        deltaContentsString = _editor.Contents?.ToString() ?? string.Empty;
         await OnSave.InvokeAsync(_html);
     }
 
     private async Task AddParagraph()
     {
         await _editor.SetHtml(_editor.Html + Environment.NewLine + "<p>New Paragraph</p>");
+    }
+    private void ShowContents()
+    {
+        deltaContentsString = _editor.Contents?.ToString() ?? string.Empty;
     }
 }

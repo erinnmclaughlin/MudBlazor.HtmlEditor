@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -39,6 +40,18 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
     /// </summary>
     [Parameter]
     public EventCallback<string> HtmlChanged { get; set; }
+
+    /// <summary>
+    /// The delta contents from the editor.
+    /// </summary>
+    [Parameter]
+    public JsonObject Contents { get; set; } = new JsonObject();
+
+    /// <summary>
+    /// Raised when the <see cref="Contents"/> property changes.
+    /// </summary>
+    [Parameter]
+    public EventCallback<JsonObject> ContentsChanged { get; set; }
 
     /// <summary>
     /// The plain-text content from the editor.
@@ -83,6 +96,7 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
 
         HandleHtmlContentChanged(html);
         HandleTextContentChanged(await GetText());
+        HandleContentsChanged(await GetContents());
     }
 
     /// <summary>
@@ -94,6 +108,17 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
             return await _quill.InvokeAsync<string>("getHtml");
 
         return "";
+    }
+
+    /// <summary>
+    /// Gets the current delta contents of the editor.
+    /// </summary>
+    public async Task<JsonObject> GetContents()
+    {
+        if (_quill is not null)
+            return await _quill.InvokeAsync<JsonObject>("getContents");
+
+        return  new JsonObject();
     }
 
     /// <summary>
@@ -147,6 +172,15 @@ public sealed partial class MudHtmlEditor : IAsyncDisposable
 
         Text = text;
         await TextChanged.InvokeAsync(text);
+    }
+
+    [JSInvokable]
+    public async void HandleContentsChanged(JsonObject contents)
+    {
+        if (JsonObject.Equals(Contents, contents)) return; // nothing changed
+
+        Contents = contents;
+        await ContentsChanged.InvokeAsync(contents);
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
